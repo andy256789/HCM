@@ -12,6 +12,7 @@ public class HcmDbContext : DbContext
     public DbSet<Employee> Employees { get; set; }
     public DbSet<Department> Departments { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<SalaryHistory> SalaryHistories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -55,6 +56,25 @@ public class HcmDbContext : DbContext
             entity.HasOne(u => u.Employee)
                 .WithOne(e => e.User)
                 .HasForeignKey<User>(u => u.EmployeeId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // SalaryHistory configuration
+        modelBuilder.Entity<SalaryHistory>(entity =>
+        {
+            entity.HasKey(s => s.Id);
+            entity.Property(s => s.PreviousSalary).HasColumnType("decimal(18,2)");
+            entity.Property(s => s.NewSalary).HasColumnType("decimal(18,2)");
+            entity.Property(s => s.Reason).HasMaxLength(500);
+            
+            entity.HasOne(s => s.Employee)
+                .WithMany(e => e.SalaryHistory)
+                .HasForeignKey(s => s.EmployeeId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
+            entity.HasOne(s => s.CreatedBy)
+                .WithMany()
+                .HasForeignKey(s => s.CreatedByUserId)
                 .OnDelete(DeleteBehavior.SetNull);
         });
 
