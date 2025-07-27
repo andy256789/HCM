@@ -1,3 +1,74 @@
-<div class="app-container">
-  <router-outlet></router-outlet>
+<!-- Main App Layout -->
+<div class="app-layout">
+  <!-- Sidebar Navigation (only shown when logged in) -->
+  <nav class="app-sidebar" *ngIf="isLoggedIn" [class.sidebar-collapsed]="sidebarCollapsed">
+    <!-- Brand Section -->
+    <div class="sidebar-brand">
+      <mat-icon class="brand-icon">business</mat-icon>
+      <span class="brand-text" *ngIf="!sidebarCollapsed">HCM System</span>
+    </div>
+
+    <!-- Navigation Menu -->
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          <mat-icon>dashboard</mat-icon>
+          <span *ngIf="!sidebarCollapsed">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/employees" routerLinkActive="active" class="nav-link">
+          <mat-icon>people</mat-icon>
+          <span *ngIf="!sidebarCollapsed">Employees</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/departments" routerLinkActive="active" class="nav-link">
+          <mat-icon>business</mat-icon>
+          <span *ngIf="!sidebarCollapsed">Departments</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/reports" routerLinkActive="active" class="nav-link">
+          <mat-icon>analytics</mat-icon>
+          <span *ngIf="!sidebarCollapsed">Reports</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- User Section -->
+    <div class="sidebar-user" *ngIf="currentUser">
+      <div class="user-avatar">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div class="user-info" *ngIf="!sidebarCollapsed">
+        <div class="user-name">{{currentUser.email}}</div>
+        <div class="user-role">{{currentUser.roleName}}</div>
+      </div>
+      <button mat-icon-button (click)="logout()" class="logout-btn" [matTooltip]="sidebarCollapsed ? 'Logout' : ''">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Content Area -->
+  <div class="app-main" [class.with-sidebar]="isLoggedIn">
+    <!-- Top Header (only shown when logged in) -->
+    <header class="app-header" *ngIf="isLoggedIn">
+      <button mat-icon-button (click)="toggleSidebar()" class="sidebar-toggle">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <div class="header-title">
+        <h1>{{getPageTitle()}}</h1>
+      </div>
+      <div class="header-actions">
+        <!-- Add any header actions here -->
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="app-content" [class.with-header]="isLoggedIn">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>

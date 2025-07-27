@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -6,21 +6,6 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
-import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatChipsModule } from '@angular/material/chips';
 import {
   Department,
   CreateDepartmentDto,
@@ -34,40 +19,15 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-departments',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatProgressSpinnerModule,
-    MatExpansionModule,
-    MatChipsModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.scss'],
 })
 export class DepartmentsComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
-  displayedColumns: string[] = [
-    'name',
-    'description',
-    'managerName',
-    'employeeCount',
-    'actions',
-  ];
-  dataSource = new MatTableDataSource<Department>();
+  dataSource = {
+    data: [] as Department[],
+    filteredData: [] as Department[],
+  };
   employees: Employee[] = [];
   loading = false;
   showForm = false;
@@ -81,9 +41,7 @@ export class DepartmentsComponent implements OnInit {
     private departmentService: DepartmentService,
     private employeeService: EmployeeService,
     private authService: AuthService,
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private fb: FormBuilder
   ) {
     this.departmentForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
@@ -93,14 +51,20 @@ export class DepartmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUser = this.authService.getCurrentUser();
+    // First try to get the current user value
+    this.currentUser = this.authService.getCurrentUserValue();
+    console.log('Initial currentUser:', this.currentUser);
+    
+    // If no user, try to subscribe to the current user observable
+    if (!this.currentUser) {
+      this.authService.currentUser$.subscribe(user => {
+        this.currentUser = user;
+        console.log('User from observable:', this.currentUser);
+      });
+    }
+    
     this.loadDepartments();
     this.loadEmployees();
-  }
-
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   loadDepartments(): void {
@@ -108,18 +72,12 @@ export class DepartmentsComponent implements OnInit {
     this.departmentService.getAllDepartments().subscribe({
       next: (departments) => {
         this.dataSource.data = departments;
+        this.dataSource.filteredData = departments;
         this.loadDepartmentEmployees(departments);
         this.loading = false;
       },
       error: (error) => {
-        this.snackBar.open(
-          'Error loading departments: ' + error.message,
-          'Close',
-          {
-            duration: 5000,
-            panelClass: ['error-snackbar'],
-          }
-        );
+        console.error('Error loading departments:', error);
         this.loading = false;
       },
     });
@@ -154,11 +112,14 @@ export class DepartmentsComponent implements OnInit {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const searchTerm = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+    this.dataSource.filteredData = this.dataSource.data.filter(
+      (department) =>
+        department.name.toLowerCase().includes(searchTerm) ||
+        (department.description &&
+          department.description.toLowerCase().includes(searchTerm))
+    );
   }
 
   showAddForm(): void {
@@ -199,23 +160,13 @@ export class DepartmentsComponent implements OnInit {
           .updateDepartment(this.editingDepartment.id, updateDto)
           .subscribe({
             next: () => {
-              this.snackBar.open('Department updated successfully!', 'Close', {
-                duration: 3000,
-                panelClass: ['success-snackbar'],
-              });
+              console.log('Department updated successfully!');
               this.loadDepartments();
               this.cancelForm();
               this.loading = false;
             },
             error: (error) => {
-              this.snackBar.open(
-                'Error updating department: ' + error.message,
-                'Close',
-                {
-                  duration: 5000,
-                  panelClass: ['error-snackbar'],
-                }
-              );
+              console.error('Error updating department:', error.message);
               this.loading = false;
             },
           });
@@ -225,23 +176,13 @@ export class DepartmentsComponent implements OnInit {
 
         this.departmentService.createDepartment(createDto).subscribe({
           next: () => {
-            this.snackBar.open('Department created successfully!', 'Close', {
-              duration: 3000,
-              panelClass: ['success-snackbar'],
-            });
+            console.log('Department created successfully!');
             this.loadDepartments();
             this.cancelForm();
             this.loading = false;
           },
           error: (error) => {
-            this.snackBar.open(
-              'Error creating department: ' + error.message,
-              'Close',
-              {
-                duration: 5000,
-                panelClass: ['error-snackbar'],
-              }
-            );
+            console.error('Error creating department:', error.message);
             this.loading = false;
           },
         });
@@ -252,13 +193,8 @@ export class DepartmentsComponent implements OnInit {
   deleteDepartment(department: Department): void {
     const employeeCount = this.getDepartmentEmployeeCount(department.id);
     if (employeeCount > 0) {
-      this.snackBar.open(
-        'Cannot delete department with employees. Please reassign employees first.',
-        'Close',
-        {
-          duration: 5000,
-          panelClass: ['error-snackbar'],
-        }
+      alert(
+        'Cannot delete department with employees. Please reassign employees first.'
       );
       return;
     }
@@ -267,22 +203,12 @@ export class DepartmentsComponent implements OnInit {
       this.loading = true;
       this.departmentService.deleteDepartment(department.id).subscribe({
         next: () => {
-          this.snackBar.open('Department deleted successfully!', 'Close', {
-            duration: 3000,
-            panelClass: ['success-snackbar'],
-          });
+          console.log('Department deleted successfully!');
           this.loadDepartments();
           this.loading = false;
         },
         error: (error) => {
-          this.snackBar.open(
-            'Error deleting department: ' + error.message,
-            'Close',
-            {
-              duration: 5000,
-              panelClass: ['error-snackbar'],
-            }
-          );
+          console.error('Error deleting department:', error.message);
           this.loading = false;
         },
       });
@@ -297,7 +223,7 @@ export class DepartmentsComponent implements OnInit {
     return this.currentUser?.roleName === 'HR Admin';
   }
 
-  getManagerName(managerId: number | null): string {
+  getManagerName(managerId: number | null | undefined): string {
     if (!managerId) return 'No Manager';
     const manager = this.employees.find((e) => e.id === managerId);
     return manager ? manager.fullName : 'Unknown';

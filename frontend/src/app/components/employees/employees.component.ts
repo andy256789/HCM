@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -6,19 +6,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
-import { MatSortModule, MatSort } from '@angular/material/sort';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {
   Employee,
   CreateEmployeeDto,
@@ -32,39 +20,13 @@ import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-employees',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCardModule,
-    MatToolbarModule,
-    MatProgressSpinnerModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, MatSnackBarModule],
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.scss'],
 })
 export class EmployeesComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
-  displayedColumns: string[] = [
-    'fullName',
-    'email',
-    'jobTitle',
-    'departmentName',
-    'salary',
-    'actions',
-  ];
-  dataSource = new MatTableDataSource<Employee>();
+  employees: Employee[] = [];
+  filteredEmployees: Employee[] = [];
   departments: Department[] = [];
   loading = false;
   showForm = false;
@@ -73,12 +35,19 @@ export class EmployeesComponent implements OnInit {
 
   employeeForm: FormGroup;
 
+  // Simple data source for template compatibility
+  get dataSource() {
+    return {
+      data: this.employees,
+      filteredData: this.filteredEmployees,
+    };
+  }
+
   constructor(
     private employeeService: EmployeeService,
     private departmentService: DepartmentService,
     private authService: AuthService,
     private fb: FormBuilder,
-    private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {
     this.employeeForm = this.fb.group({
@@ -95,21 +64,26 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUser = this.authService.getCurrentUser();
-    this.loadEmployees();
-    this.loadDepartments();
-  }
+    // Subscribe to current user changes - same pattern as dashboard
+    this.authService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+      console.log('Current user in employees component:', this.currentUser);
+      console.log('Can edit:', this.canEdit());
+      console.log('Can delete:', this.canDelete());
 
-  ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+      if (user) {
+        this.loadEmployees();
+        this.loadDepartments();
+      }
+    });
   }
 
   loadEmployees(): void {
     this.loading = true;
     this.employeeService.getAllEmployees().subscribe({
       next: (employees) => {
-        this.dataSource.data = employees;
+        this.employees = employees;
+        this.filteredEmployees = employees;
         this.loading = false;
       },
       error: (error) => {
@@ -146,10 +120,18 @@ export class EmployeesComponent implements OnInit {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const searchTerm = filterValue.trim().toLowerCase();
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+    if (searchTerm === '') {
+      this.filteredEmployees = this.employees;
+    } else {
+      this.filteredEmployees = this.employees.filter(
+        (employee) =>
+          employee.fullName.toLowerCase().includes(searchTerm) ||
+          employee.email.toLowerCase().includes(searchTerm) ||
+          employee.jobTitle.toLowerCase().includes(searchTerm) ||
+          employee.departmentName.toLowerCase().includes(searchTerm)
+      );
     }
   }
 
@@ -272,14 +254,26 @@ export class EmployeesComponent implements OnInit {
   }
 
   canEdit(): boolean {
-    return (
-      this.currentUser?.roleName === 'HR Admin' ||
-      this.currentUser?.roleName === 'Manager'
-    );
+    console.log('Checking canEdit - currentUser:', this.currentUser);
+    console.log('Role name:', this.currentUser?.roleName);
+    console.log('AuthService.isHrAdmin():', this.authService.isHrAdmin());
+    console.log('AuthService.isManager():', this.authService.isManager());
+
+    // Use AuthService methods for better reliability
+    const result = this.authService.isHrAdmin() || this.authService.isManager();
+    console.log('canEdit result:', result);
+    return result;
   }
 
   canDelete(): boolean {
-    return this.currentUser?.roleName === 'HR Admin';
+    console.log('Checking canDelete - currentUser:', this.currentUser);
+    console.log('Role name:', this.currentUser?.roleName);
+    console.log('AuthService.isHrAdmin():', this.authService.isHrAdmin());
+
+    // Use AuthService method for better reliability
+    const result = this.authService.isHrAdmin();
+    console.log('canDelete result:', result);
+    return result;
   }
 
   getDepartmentName(departmentId: number): string {

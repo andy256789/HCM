@@ -1,11 +1,10 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, inject } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { routes } from './app.routes';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AuthService } from './services/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,7 +12,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         (req, next) => {
-          const token = localStorage.getItem('token');
+          const authService = inject(AuthService);
+          const token = authService.getToken();
           if (token) {
             req = req.clone({
               setHeaders: {
@@ -26,6 +26,5 @@ export const appConfig: ApplicationConfig = {
       ])
     ),
     provideAnimationsAsync(),
-    importProvidersFrom(MatSnackBarModule),
   ],
 };

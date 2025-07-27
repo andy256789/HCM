@@ -1,13 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { EmployeeService } from '../../services/employee.service';
@@ -18,17 +11,7 @@ import { Department } from '../../models/department.model';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatCardModule,
-    MatTableModule,
-    MatIconModule,
-    MatMenuModule,
-    MatDividerModule,
-    MatSnackBarModule,
-  ],
+  imports: [CommonModule, MatSnackBarModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -44,6 +27,29 @@ export class DashboardComponent implements OnInit {
     'salary',
   ];
   isLoading = true;
+  connectionStatus = true;
+
+  // Computed properties for dashboard stats
+  get totalEmployees(): number {
+    return this.employees.length;
+  }
+
+  get totalDepartments(): number {
+    return this.departments.length;
+  }
+
+  get averageSalary(): number {
+    if (this.employees.length === 0) return 0;
+    const total = this.employees.reduce(
+      (sum, emp) => sum + (emp.salary || 0),
+      0
+    );
+    return total / this.employees.length;
+  }
+
+  get totalPositions(): number {
+    return this.employees.length; // This could be modified to show open positions
+  }
 
   constructor(
     private authService: AuthService,

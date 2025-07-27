@@ -1,18 +1,18 @@
 <div class="reports-container">
-  <!-- Header -->
-  <mat-toolbar color="primary" class="page-header">
-    <mat-icon class="header-icon">analytics</mat-icon>
-    <span class="header-title">HR Analytics & Reports</span>
-    <span class="spacer"></span>
-    <button mat-raised-button color="accent" (click)="refreshData()" class="refresh-button">
-      <mat-icon>refresh</mat-icon>
-      Refresh
-    </button>
-    <button mat-stroked-button (click)="exportReport()" class="export-button">
-      <mat-icon>download</mat-icon>
-      Export
-    </button>
-  </mat-toolbar>
+  <!-- Page Header -->
+  <div class="page-header">
+    <h2 class="page-title">HR Analytics & Reports</h2>
+    <div class="header-actions">
+      <button mat-raised-button color="primary" (click)="refreshData()" class="refresh-button">
+        <mat-icon>refresh</mat-icon>
+        Refresh
+      </button>
+      <button mat-stroked-button (click)="exportReport()" class="export-button">
+        <mat-icon>download</mat-icon>
+        Export
+      </button>
+    </div>
+  </div>
 
   <!-- Loading Spinner -->
   <div class="loading-container" *ngIf="loading">

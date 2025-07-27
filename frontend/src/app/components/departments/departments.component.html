@@ -1,244 +1,147 @@
-<div class="departments-container">
+<div class="departments">
   <!-- Header -->
-  <mat-toolbar color="primary" class="page-header">
-    <mat-icon class="header-icon">business</mat-icon>
-    <span class="header-title">Department Management</span>
-    <span class="spacer"></span>
-    <button mat-raised-button color="accent" *ngIf="canEdit()" (click)="showAddForm()" class="add-button">
-      <mat-icon>add</mat-icon>
+  <div class="header">
+    <div class="header-content">
+      <h1>Department Management</h1>
+      <p class="header-subtitle">Organize your company structure</p>
+    </div>
+    <button class="add-btn" *ngIf="canEdit()" (click)="showAddForm()">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+      </svg>
       Add Department
     </button>
-  </mat-toolbar>
+  </div>
 
-  <!-- Loading Spinner -->
-  <div class="loading-container" *ngIf="loading">
-    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading departments...</p>
   </div>
 
   <!-- Department Form -->
-  <mat-card class="form-card" *ngIf="showForm">
-    <mat-card-header>
-      <mat-card-title>
-        <mat-icon>{{ editingDepartment ? 'edit' : 'add' }}</mat-icon>
-        {{ editingDepartment ? 'Edit Department' : 'Add New Department' }}
-      </mat-card-title>
-    </mat-card-header>
-    
-    <mat-card-content>
-      <form [formGroup]="departmentForm" (ngSubmit)="saveDepartment()" class="department-form">
+  <div class="form-section" *ngIf="showForm">
+    <div class="form-card">
+      <div class="form-header">
+        <h2>{{ editingDepartment ? 'Edit Department' : 'Add New Department' }}</h2>
+        <button class="close-btn" (click)="cancelForm()" type="button">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </button>
+      </div>
+      
+      <form [formGroup]="departmentForm" (ngSubmit)="saveDepartment()" class="form">
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Department Name</mat-label>
-            <input matInput formControlName="name" required>
-            <mat-icon matSuffix>business</mat-icon>
-            <mat-error *ngIf="departmentForm.get('name')?.hasError('required')">
+          <div class="form-group">
+            <label>Department Name</label>
+            <input type="text" formControlName="name" placeholder="Enter department name">
+            <div class="error" *ngIf="departmentForm.get('name')?.hasError('required') && departmentForm.get('name')?.touched">
               Department name is required
-            </mat-error>
-            <mat-error *ngIf="departmentForm.get('name')?.hasError('maxlength')">
-              Department name must be less than 100 characters
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Manager</mat-label>
-            <mat-select formControlName="managerId">
-              <mat-option [value]="null">No Manager</mat-option>
-              <mat-option *ngFor="let manager of getAvailableManagers()" [value]="manager.id">
-                {{ manager.fullName }} - {{ manager.jobTitle }}
-              </mat-option>
-            </mat-select>
-            <mat-icon matSuffix>person</mat-icon>
-          </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Manager</label>
+            <select formControlName="managerId">
+              <option [value]="null">No Manager</option>
+              <option *ngFor="let manager of getAvailableManagers()" [value]="manager.id">
+                {{ manager.fullName }}
+              </option>
+            </select>
+          </div>
         </div>
 
         <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field full-width">
-            <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description" rows="4" placeholder="Enter department description..."></textarea>
-            <mat-icon matSuffix>description</mat-icon>
-            <mat-error *ngIf="departmentForm.get('description')?.hasError('maxlength')">
-              Description must be less than 500 characters
-            </mat-error>
-          </mat-form-field>
+          <div class="form-group full-width">
+            <label>Description</label>
+            <textarea formControlName="description" placeholder="Enter department description" rows="4"></textarea>
+          </div>
         </div>
 
         <div class="form-actions">
-          <button mat-button type="button" (click)="cancelForm()" class="cancel-button">
-            <mat-icon>cancel</mat-icon>
-            Cancel
-          </button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="!departmentForm.valid || loading">
-            <mat-icon>save</mat-icon>
+          <button type="button" class="cancel-btn" (click)="cancelForm()">Cancel</button>
+          <button type="submit" class="save-btn" [disabled]="!departmentForm.valid || loading">
             {{ editingDepartment ? 'Update' : 'Save' }}
           </button>
         </div>
       </form>
-    </mat-card-content>
-  </mat-card>
+    </div>
+  </div>
 
-  <!-- Department Table -->
-  <mat-card class="table-card" *ngIf="!showForm">
-    <mat-card-header>
-      <mat-card-title class="table-title">
-        <mat-icon>list</mat-icon>
-        Departments List
-      </mat-card-title>
-    </mat-card-header>
-    
-    <mat-card-content>
-      <!-- Search Filter -->
-      <mat-form-field appearance="outline" class="search-field">
-        <mat-label>Search departments</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Search by name or description">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-
-      <!-- Data Table -->
-      <div class="table-container">
-        <table mat-table [dataSource]="dataSource" matSort class="departments-table">
-          <!-- Name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              <mat-icon class="column-icon">business</mat-icon>
-              Department Name
-            </th>
-            <td mat-cell *matCellDef="let department">
-              <div class="department-name">
-                <mat-icon class="dept-icon">business_center</mat-icon>
-                <span>{{ department.name }}</span>
-              </div>
-            </td>
-          </ng-container>
-
-          <!-- Description Column -->
-          <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-icon class="column-icon">description</mat-icon>
-              Description
-            </th>
-            <td mat-cell *matCellDef="let department">
-              <span class="description-text">{{ department.description || 'No description' }}</span>
-            </td>
-          </ng-container>
-
-          <!-- Manager Column -->
-          <ng-container matColumnDef="managerName">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-icon class="column-icon">person</mat-icon>
-              Manager
-            </th>
-            <td mat-cell *matCellDef="let department">
-              <div class="manager-info">
-                <mat-icon class="manager-icon">account_circle</mat-icon>
-                <span>{{ getManagerName(department.managerId) }}</span>
-              </div>
-            </td>
-          </ng-container>
-
-          <!-- Employee Count Column -->
-          <ng-container matColumnDef="employeeCount">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              <mat-icon class="column-icon">people</mat-icon>
-              Employees
-            </th>
-            <td mat-cell *matCellDef="let department">
-              <mat-chip-set>
-                <mat-chip [color]="getDepartmentEmployeeCount(department.id) > 0 ? 'primary' : 'accent'">
-                  {{ getDepartmentEmployeeCount(department.id) }} employees
-                </mat-chip>
-              </mat-chip-set>
-            </td>
-          </ng-container>
-
-          <!-- Actions Column -->
-          <ng-container matColumnDef="actions">
-            <th mat-header-cell *matHeaderCellDef>
-              <mat-icon class="column-icon">settings</mat-icon>
-              Actions
-            </th>
-            <td mat-cell *matCellDef="let department">
-              <div class="action-buttons">
-                <button mat-icon-button color="primary" *ngIf="canEdit()" (click)="editDepartment(department)" 
-                        matTooltip="Edit Department">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button color="warn" *ngIf="canDelete()" (click)="deleteDepartment(department)"
-                        matTooltip="Delete Department">
-                  <mat-icon>delete</mat-icon>
-                </button>
-              </div>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" 
-              [class.expandable-row]="getDepartmentEmployeeCount(row.id) > 0"></tr>
-        </table>
-
-        <!-- No Data Message -->
-        <div class="no-data" *ngIf="dataSource.data.length === 0 && !loading">
-          <mat-icon class="no-data-icon">business_outline</mat-icon>
-          <h3>No Departments Found</h3>
-          <p>{{ showForm ? 'Loading departments...' : 'Start by adding your first department.' }}</p>
-        </div>
+  <!-- Department List -->
+  <div class="list-section" *ngIf="!showForm">
+    <!-- Search -->
+    <div class="search-section">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <input type="text" (keyup)="applyFilter($event)" placeholder="Search departments by name or description...">
       </div>
+    </div>
 
-      <!-- Paginator -->
-      <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" 
-                     [pageSize]="10"
-                     showFirstLastButtons
-                     aria-label="Select page of departments">
-      </mat-paginator>
-    </mat-card-content>
-  </mat-card>
-
-  <!-- Department Details with Employee List -->
-  <div class="department-details" *ngIf="!showForm && dataSource.data.length > 0">
-    <mat-card class="details-card">
-      <mat-card-header>
-        <mat-card-title class="details-title">
-          <mat-icon>people</mat-icon>
-          Department Employee Details
-        </mat-card-title>
-      </mat-card-header>
-      
-      <mat-card-content>
-        <mat-accordion class="department-accordion">
-          <mat-expansion-panel *ngFor="let department of dataSource.data" 
-                               [expanded]="getDepartmentEmployeeCount(department.id) <= 5">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
-                <mat-icon class="panel-icon">business</mat-icon>
-                {{ department.name }}
-              </mat-panel-title>
-              <mat-panel-description>
-                {{ getDepartmentEmployeeCount(department.id) }} employees
-                <mat-icon *ngIf="getDepartmentEmployeeCount(department.id) > 0">expand_more</mat-icon>
-              </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <div class="department-employees" *ngIf="getDepartmentEmployeeCount(department.id) > 0">
-              <div class="employee-grid">
-                <div class="employee-card" *ngFor="let employee of getDepartmentEmployees(department.id)">
-                  <div class="employee-avatar">
-                    <mat-icon>account_circle</mat-icon>
-                  </div>
-                  <div class="employee-info">
-                    <h4>{{ employee.fullName }}</h4>
-                    <p class="job-title">{{ employee.jobTitle }}</p>
-                    <p class="salary">${{ employee.salary | number:'1.2-2' }}</p>
-                  </div>
-                </div>
-              </div>
+    <!-- Department Cards -->
+    <div class="departments-grid" *ngIf="dataSource.data.length > 0">
+      <div class="department-card" *ngFor="let department of dataSource.filteredData">
+        <div class="card-header">
+          <div class="department-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-4h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+            </svg>
+          </div>
+          <div class="department-actions" *ngIf="canEdit() || canDelete()">
+            <button class="action-btn edit-btn" *ngIf="canEdit()" (click)="editDepartment(department)" title="Edit Department">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+              </svg>
+            </button>
+            <button class="action-btn delete-btn" *ngIf="canDelete()" (click)="deleteDepartment(department)" title="Delete Department">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="department-info">
+          <h3 class="department-name">{{ department.name }}</h3>
+          <p class="department-description">{{ department.description || 'No description provided' }}</p>
+          
+          <div class="department-details">
+            <div class="detail-item" *ngIf="getManagerName(department.managerId) !== 'No Manager'">
+              <svg class="detail-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+              <span>{{ getManagerName(department.managerId) }}</span>
             </div>
             
-            <div class="no-employees" *ngIf="getDepartmentEmployeeCount(department.id) === 0">
-              <mat-icon>people_outline</mat-icon>
-              <p>No employees in this department</p>
+            <div class="detail-item">
+              <svg class="detail-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A3 3 0 0 0 17.15 7h-2.8c-1.04 0-1.95.53-2.47 1.37L9.34 13H7.5c-.83 0-1.5.67-1.5 1.5S6.67 16 7.5 16H9l3 4 3-4h5z"/>
+              </svg>
+              <span class="employee-count">{{ getDepartmentEmployeeCount(department.id) }} employees</span>
             </div>
-          </mat-expansion-panel>
-        </mat-accordion>
-      </mat-card-content>
-    </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Data -->
+    <div class="no-data" *ngIf="dataSource.data.length === 0 && !loading">
+      <div class="no-data-illustration">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-4h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+        </svg>
+      </div>
+      <h3>No Departments Found</h3>
+      <p>Your organization doesn't have any departments yet. Start by creating your first department to organize your workforce.</p>
+      <button class="add-first-btn" *ngIf="canEdit()" (click)="showAddForm()">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+        </svg>
+        Add First Department
+      </button>
+    </div>
   </div>
 </div>
