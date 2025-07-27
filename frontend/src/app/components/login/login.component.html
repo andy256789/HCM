@@ -1,115 +1,134 @@
-<div class="login">
-  <div class="login-content">
-    <!-- Logo and Title Section -->
-    <div class="login-header">
-      <div class="logo-container">
+<div class="login-container">
+  <!-- Left Panel - Branding -->
+  <div class="branding-panel">
+    <div class="branding-content">
+      <div class="company-logo">
         <svg class="logo-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-4h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+          <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A2 2 0 0 0 18.06 7H16c-.8 0-1.54.37-2.01.99l-2.54 3.26c-.74.95-.07 2.37 1.15 2.37H13V22h2v-5h1v5h4zM12.5 11.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S11 9.17 11 10s.67 1.5 1.5 1.5zM5.5 6c1.11 0 2-.89 2-2s-.89-2-2-2-2 .89-2 2 .89 2 2 2zm2 16v-7H9V9.5c0-.28-.22-.5-.5-.5H3c-.28 0-.5.22-.5.5V15H4v7h3.5z"/>
         </svg>
       </div>
-      <h1 class="app-title">HCM System</h1>
-      <p class="app-subtitle">Human Capital Management</p>
-    </div>
-
-    <!-- Login Form -->
-    <div class="login-card">
-      <div class="card-header">
-        <h2 class="card-title">Welcome Back</h2>
-        <p class="card-subtitle">Please sign in to your account</p>
-      </div>
+      <h1 class="company-name">HumanFlow</h1>
+      <p class="company-tagline">Professional Human Capital Management</p>
       
-      <div class="card-content">
-        <!-- Error Message -->
-        <div class="error-message" *ngIf="errorMessage">
-          <svg class="error-icon" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+      <div class="features-list">
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
           </svg>
-          <span>{{ errorMessage }}</span>
+          <span>Employee Management</span>
         </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          <span>Department Organization</span>
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          <span>Salary Administration</span>
+        </div>
+        <div class="feature-item">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          <span>Role-Based Access</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <div class="input-wrapper">
-              <input type="email" 
-                     id="email"
-                     [(ngModel)]="loginData.email" 
-                     name="email" 
-                     required 
-                     autocomplete="email"
-                     placeholder="Enter your email">
-              <svg class="input-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+  <!-- Right Panel - Login Form -->
+  <div class="login-panel">
+    <div class="login-content">
+      <!-- Header -->
+      <div class="login-header">
+        <h2>Welcome Back</h2>
+        <p>Sign in to access your HR dashboard</p>
+      </div>
+
+      <!-- Error Message -->
+      <div class="error-alert" *ngIf="errorMessage">
+        <svg class="error-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Login Form -->
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
+        <div class="form-group">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" 
+                 id="email"
+                 [(ngModel)]="loginData.email" 
+                 name="email" 
+                 required 
+                 autocomplete="email"
+                 placeholder="john.doe@company.com"
+                 class="form-input">
+        </div>
+        
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="password-input-wrapper">
+            <input [type]="hidePassword ? 'password' : 'text'" 
+                   id="password"
+                   [(ngModel)]="loginData.password" 
+                   name="password" 
+                   required 
+                   autocomplete="current-password"
+                   placeholder="Enter your password"
+                   class="form-input">
+            <button type="button" class="password-toggle" (click)="hidePassword = !hidePassword">
+              <svg *ngIf="hidePassword" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
               </svg>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="password">Password</label>
-            <div class="input-wrapper">
-              <input [type]="hidePassword ? 'password' : 'text'" 
-                     id="password"
-                     [(ngModel)]="loginData.password" 
-                     name="password" 
-                     required 
-                     autocomplete="current-password"
-                     placeholder="Enter your password">
-              <button type="button" class="password-toggle" (click)="hidePassword = !hidePassword">
-                <svg *ngIf="hidePassword" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>
-                </svg>
-                <svg *ngIf="!hidePassword" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                </svg>
-              </button>
-            </div>
-          </div>
-          
-          <div class="login-actions">
-            <button type="submit" 
-                    class="login-button"
-                    [disabled]="isLoading || !loginForm.valid">
-              <svg *ngIf="isLoading" class="spinning" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+              <svg *ngIf="!hidePassword" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd"/>
+                <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"/>
               </svg>
-              <span>{{isLoading ? 'Signing In...' : 'Sign In'}}</span>
             </button>
           </div>
-        </form>
-      </div>
-    </div>
-    
-    <!-- Demo Credentials -->
-    <div class="demo-card">
-      <div class="demo-header">
-        <svg class="demo-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </svg>
-        <h3>Demo Credentials</h3>
-      </div>
-      <div class="demo-content">
-        <div class="credential-item" (click)="fillCredentials('admin@company.com', 'password123')">
-          <div class="credential-role">HR Admin</div>
-          <div class="credential-email">admin&#64;company.com</div>
-          <div class="credential-password">password123</div>
         </div>
-        <div class="credential-item" (click)="fillCredentials('john.doe@company.com', 'password123')">
-          <div class="credential-role">Manager</div>
-          <div class="credential-email">john.doe&#64;company.com</div>
-          <div class="credential-password">password123</div>
-        </div>
-        <div class="credential-item" (click)="fillCredentials('jane.smith@company.com', 'password123')">
-          <div class="credential-role">Employee</div>
-          <div class="credential-email">jane.smith&#64;company.com</div>
-          <div class="credential-password">password123</div>
-        </div>
-        <p class="demo-note">Click on any credential to auto-fill the form</p>
-      </div>
-    </div>
+        
+        <button type="submit" 
+                class="submit-button"
+                [disabled]="isLoading || !loginForm.valid">
+          <svg *ngIf="isLoading" class="loading-spinner" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.25"/>
+            <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+          </svg>
+          <span>{{ isLoading ? 'Signing In...' : 'Sign In' }}</span>
+        </button>
+      </form>
 
-    <!-- Footer -->
-    <div class="login-footer">
-      <p>&copy; 2025 HCM System. All rights reserved.</p>
+      <!-- Demo Credentials -->
+      <div class="demo-credentials">
+        <div class="demo-header">
+          <svg class="demo-icon" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+          </svg>
+          <span>Demo Accounts</span>
+        </div>
+        <div class="credentials-grid">
+          <div class="credential-card" (click)="fillCredentials('admin@company.com', 'password123')">
+            <div class="role-badge hr-admin">HR Admin</div>
+            <div class="credential-email">admin&#64;company.com</div>
+          </div>
+          <div class="credential-card" (click)="fillCredentials('john.doe@company.com', 'password123')">
+            <div class="role-badge manager">Manager</div>
+            <div class="credential-email">john.doe&#64;company.com</div>
+          </div>
+          <div class="credential-card" (click)="fillCredentials('jane.smith@company.com', 'password123')">
+            <div class="role-badge employee">Employee</div>
+            <div class="credential-email">jane.smith&#64;company.com</div>
+          </div>
+        </div>
+        <p class="demo-note">Click any card to auto-fill login credentials</p>
+      </div>
     </div>
   </div>
 </div>
