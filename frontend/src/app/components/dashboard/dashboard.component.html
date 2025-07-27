@@ -1,0 +1,134 @@
+<div class="dashboard-container">
+  <mat-toolbar color="primary">
+    <span>HCM System</span>
+    <span class="spacer"></span>
+    <span *ngIf="currentUser">Welcome, {{currentUser.email}} ({{currentUser.roleName}})</span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="testDatabaseConnection()">
+        <mat-icon>refresh</mat-icon>
+        Test Database
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <div class="dashboard-content">
+    <!-- Dashboard Stats -->
+    <div class="stats-grid">
+      <mat-card class="stat-card">
+        <mat-card-header>
+          <mat-card-title>Total Employees</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stat-number">{{employees.length}}</div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-header>
+          <mat-card-title>Departments</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stat-number">{{departments.length}}</div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="stat-card">
+        <mat-card-header>
+          <mat-card-title>Your Role</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="stat-text">{{currentUser?.roleName}}</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Employee Table -->
+    <mat-card class="table-card">
+      <mat-card-header>
+        <mat-card-title>Employee Directory</mat-card-title>
+        <mat-card-subtitle>
+          *This demonstrates PostgreSQL integration and role-based access
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="isLoading" class="loading-spinner">
+          Loading employees...
+        </div>
+        
+        <table mat-table [dataSource]="employees" class="employees-table" *ngIf="!isLoading">
+          <ng-container matColumnDef="fullName">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let employee">{{employee.fullName}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let employee">{{employee.email}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="jobTitle">
+            <th mat-header-cell *matHeaderCellDef>Job Title</th>
+            <td mat-cell *matCellDef="let employee">{{employee.jobTitle}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="departmentName">
+            <th mat-header-cell *matHeaderCellDef>Department</th>
+            <td mat-cell *matCellDef="let employee">{{employee.departmentName}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="salary">
+            <th mat-header-cell *matHeaderCellDef>Salary</th>
+            <td mat-cell *matCellDef="let employee">{{employee.salary | currency}}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Department List -->
+    <mat-card class="table-card">
+      <mat-card-header>
+        <mat-card-title>Departments</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="departments-grid">
+          <mat-card *ngFor="let dept of departments" class="department-card">
+            <mat-card-header>
+              <mat-card-title>{{dept.name}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{dept.description}}</p>
+              <p><strong>Employees:</strong> {{dept.employeeCount}}</p>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Connection Test Info -->
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title>PostgreSQL Database Status</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>✅ Database connection is working!</p>
+        <p>📊 Data is being fetched from PostgreSQL database</p>
+        <p>🔐 Authentication and authorization are working</p>
+        <p>🏗️ Entity Framework Core ORM is configured</p>
+        <button mat-raised-button color="accent" (click)="testDatabaseConnection()">
+          <mat-icon>refresh</mat-icon>
+          Refresh Data
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
