@@ -1,0 +1,228 @@
+<div class="employees-container">
+  <!-- Header -->
+  <mat-toolbar color="primary" class="page-header">
+    <mat-icon class="header-icon">people</mat-icon>
+    <span class="header-title">Employee Management</span>
+    <span class="spacer"></span>
+    <button mat-raised-button color="accent" *ngIf="canEdit()" (click)="showAddForm()" class="add-button">
+      <mat-icon>add</mat-icon>
+      Add Employee
+    </button>
+  </mat-toolbar>
+
+  <!-- Loading Spinner -->
+  <div class="loading-container" *ngIf="loading">
+    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+  </div>
+
+  <!-- Employee Form -->
+  <mat-card class="form-card" *ngIf="showForm">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>{{ editingEmployee ? 'edit' : 'add' }}</mat-icon>
+        {{ editingEmployee ? 'Edit Employee' : 'Add New Employee' }}
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="employeeForm" (ngSubmit)="saveEmployee()" class="employee-form">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" required>
+            <mat-error *ngIf="employeeForm.get('firstName')?.hasError('required')">
+              First name is required
+            </mat-error>
+            <mat-error *ngIf="employeeForm.get('firstName')?.hasError('maxlength')">
+              First name must be less than 50 characters
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" required>
+            <mat-error *ngIf="employeeForm.get('lastName')?.hasError('required')">
+              Last name is required
+            </mat-error>
+            <mat-error *ngIf="employeeForm.get('lastName')?.hasError('maxlength')">
+              Last name must be less than 50 characters
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" required>
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="employeeForm.get('email')?.hasError('required')">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="employeeForm.get('email')?.hasError('email')">
+              Please enter a valid email
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Job Title</mat-label>
+            <input matInput formControlName="jobTitle" required>
+            <mat-icon matSuffix>work</mat-icon>
+            <mat-error *ngIf="employeeForm.get('jobTitle')?.hasError('required')">
+              Job title is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Department</mat-label>
+            <mat-select formControlName="departmentId" required>
+              <mat-option *ngFor="let department of departments" [value]="department.id">
+                {{ department.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="employeeForm.get('departmentId')?.hasError('required')">
+              Department is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Salary</mat-label>
+            <input matInput formControlName="salary" type="number" min="0" required>
+            <span matPrefix>$&nbsp;</span>
+            <mat-error *ngIf="employeeForm.get('salary')?.hasError('required')">
+              Salary is required
+            </mat-error>
+            <mat-error *ngIf="employeeForm.get('salary')?.hasError('min')">
+              Salary must be positive
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button mat-button type="button" (click)="cancelForm()" class="cancel-button">
+            <mat-icon>cancel</mat-icon>
+            Cancel
+          </button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!employeeForm.valid || loading">
+            <mat-icon>save</mat-icon>
+            {{ editingEmployee ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Employee Table -->
+  <mat-card class="table-card" *ngIf="!showForm">
+    <mat-card-header>
+      <mat-card-title class="table-title">
+        <mat-icon>list</mat-icon>
+        Employees List
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <!-- Search Filter -->
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search employees</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Search by name, email, or job title">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <!-- Data Table -->
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" matSort class="employees-table">
+          <!-- Full Name Column -->
+          <ng-container matColumnDef="fullName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-icon class="column-icon">person</mat-icon>
+              Full Name
+            </th>
+            <td mat-cell *matCellDef="let employee">
+              <div class="employee-name">
+                <mat-icon class="avatar-icon">account_circle</mat-icon>
+                <span>{{ employee.fullName }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Email Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-icon class="column-icon">email</mat-icon>
+              Email
+            </th>
+            <td mat-cell *matCellDef="let employee">{{ employee.email }}</td>
+          </ng-container>
+
+          <!-- Job Title Column -->
+          <ng-container matColumnDef="jobTitle">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-icon class="column-icon">work</mat-icon>
+              Job Title
+            </th>
+            <td mat-cell *matCellDef="let employee">{{ employee.jobTitle }}</td>
+          </ng-container>
+
+          <!-- Department Column -->
+          <ng-container matColumnDef="departmentName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-icon class="column-icon">business</mat-icon>
+              Department
+            </th>
+            <td mat-cell *matCellDef="let employee">{{ employee.departmentName }}</td>
+          </ng-container>
+
+          <!-- Salary Column -->
+          <ng-container matColumnDef="salary">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              <mat-icon class="column-icon">attach_money</mat-icon>
+              Salary
+            </th>
+            <td mat-cell *matCellDef="let employee">
+              <span class="salary-amount">${{ employee.salary | number:'1.2-2' }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-icon class="column-icon">settings</mat-icon>
+              Actions
+            </th>
+            <td mat-cell *matCellDef="let employee">
+              <div class="action-buttons">
+                <button mat-icon-button color="primary" *ngIf="canEdit()" (click)="editEmployee(employee)" 
+                        matTooltip="Edit Employee">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" *ngIf="canDelete()" (click)="deleteEmployee(employee)"
+                        matTooltip="Delete Employee">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!-- No Data Message -->
+        <div class="no-data" *ngIf="dataSource.data.length === 0 && !loading">
+          <mat-icon class="no-data-icon">people_outline</mat-icon>
+          <h3>No Employees Found</h3>
+          <p>{{ showForm ? 'Loading employees...' : 'Start by adding your first employee.' }}</p>
+        </div>
+      </div>
+
+      <!-- Paginator -->
+      <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" 
+                     [pageSize]="10"
+                     showFirstLastButtons
+                     aria-label="Select page of employees">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

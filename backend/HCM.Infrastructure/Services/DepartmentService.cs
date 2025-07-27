@@ -19,11 +19,14 @@ public class DepartmentService : IDepartmentService
     {
         return await _context.Departments
             .Include(d => d.Employees)
+            .Include(d => d.Manager)
             .Select(d => new DepartmentDto
             {
                 Id = d.Id,
                 Name = d.Name,
                 Description = d.Description,
+                ManagerId = d.ManagerId,
+                ManagerName = d.Manager != null ? $"{d.Manager.FirstName} {d.Manager.LastName}" : null,
                 EmployeeCount = d.Employees.Count,
                 CreatedAt = d.CreatedAt,
                 UpdatedAt = d.UpdatedAt
@@ -35,6 +38,7 @@ public class DepartmentService : IDepartmentService
     {
         var department = await _context.Departments
             .Include(d => d.Employees)
+            .Include(d => d.Manager)
             .FirstOrDefaultAsync(d => d.Id == id);
 
         if (department == null) return null;
@@ -44,6 +48,8 @@ public class DepartmentService : IDepartmentService
             Id = department.Id,
             Name = department.Name,
             Description = department.Description,
+            ManagerId = department.ManagerId,
+            ManagerName = department.Manager != null ? $"{department.Manager.FirstName} {department.Manager.LastName}" : null,
             EmployeeCount = department.Employees.Count,
             CreatedAt = department.CreatedAt,
             UpdatedAt = department.UpdatedAt
@@ -56,6 +62,7 @@ public class DepartmentService : IDepartmentService
         {
             Name = dto.Name,
             Description = dto.Description,
+            ManagerId = dto.ManagerId,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -72,6 +79,7 @@ public class DepartmentService : IDepartmentService
 
         department.Name = dto.Name;
         department.Description = dto.Description;
+        department.ManagerId = dto.ManagerId;
         department.UpdatedAt = DateTime.UtcNow;
 
         await _context.SaveChangesAsync();

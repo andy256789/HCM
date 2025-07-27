@@ -115,7 +115,7 @@ public class AuthService : IAuthService
         return user == null ? null : MapToUserDto(user);
     }
 
-    public async Task<bool> ValidateTokenAsync(string token)
+    public bool ValidateToken(string token)
     {
         try
         {

@@ -81,10 +81,10 @@ public class AuthController : ControllerBase
 
     [HttpPost("validate-token")]
     [Authorize]
-    public async Task<ActionResult> ValidateToken()
+    public ActionResult ValidateToken()
     {
         var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-        var isValid = await _authService.ValidateTokenAsync(token);
+        var isValid = _authService.ValidateToken(token);
         
         if (isValid)
         {

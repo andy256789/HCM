@@ -8,19 +8,19 @@
       </div>
       
       <nav class="nav-section">
-        <button mat-button class="nav-item active">
+        <button mat-button class="nav-item active" (click)="navigateToDashboard()">
           <mat-icon>dashboard</mat-icon>
           Dashboard
         </button>
-        <button mat-button class="nav-item">
+        <button mat-button class="nav-item" (click)="navigateToEmployees()">
           <mat-icon>people</mat-icon>
           Employees
         </button>
-        <button mat-button class="nav-item">
+        <button mat-button class="nav-item" (click)="navigateToDepartments()">
           <mat-icon>business</mat-icon>
           Departments
         </button>
-        <button mat-button class="nav-item">
+        <button mat-button class="nav-item" (click)="navigateToReports()">
           <mat-icon>analytics</mat-icon>
           Reports
         </button>

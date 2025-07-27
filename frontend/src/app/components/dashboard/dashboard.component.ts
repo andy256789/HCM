@@ -127,4 +127,20 @@ export class DashboardComponent implements OnInit {
       { duration: 3000 }
     );
   }
+
+  navigateToEmployees(): void {
+    this.router.navigate(['/employees']);
+  }
+
+  navigateToDepartments(): void {
+    this.router.navigate(['/departments']);
+  }
+
+  navigateToReports(): void {
+    this.router.navigate(['/reports']);
+  }
+
+  navigateToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }

@@ -1,0 +1,401 @@
+.departments-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+  .header-icon {
+    margin-right: 12px;
+  }
+  
+  .header-title {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  .add-button {
+    .mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.form-card, .table-card, .details-card {
+  margin-bottom: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  
+  mat-card-header {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 20px;
+    
+    mat-card-title {
+      display: flex;
+      align-items: center;
+      font-size: 1.3rem;
+      color: #333;
+      
+      .mat-icon {
+        margin-right: 12px;
+        color: #3f51b5;
+      }
+    }
+  }
+}
+
+.department-form {
+  .form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    
+    .form-field {
+      flex: 1;
+      
+      &.full-width {
+        flex: 1 1 100%;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid #e0e0e0;
+    
+    .cancel-button {
+      .mat-icon {
+        margin-right: 8px;
+      }
+    }
+    
+    button[type="submit"] {
+      .mat-icon {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.table-title, .details-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #333;
+  
+  .mat-icon {
+    margin-right: 12px;
+    color: #3f51b5;
+  }
+}
+
+.search-field {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+  
+  .departments-table {
+    width: 100%;
+    
+    th.mat-header-cell {
+      background-color: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+      border-bottom: 2px solid #e0e0e0;
+      
+      .column-icon {
+        margin-right: 8px;
+        font-size: 18px;
+        vertical-align: middle;
+      }
+    }
+    
+    td.mat-cell {
+      border-bottom: 1px solid #e0e0e0;
+      padding: 16px 8px;
+      
+      .department-name {
+        display: flex;
+        align-items: center;
+        
+        .dept-icon {
+          margin-right: 8px;
+          color: #3f51b5;
+          font-size: 20px;
+        }
+        
+        span {
+          font-weight: 500;
+        }
+      }
+      
+      .description-text {
+        color: #666;
+        font-style: italic;
+        max-width: 200px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      
+      .manager-info {
+        display: flex;
+        align-items: center;
+        
+        .manager-icon {
+          margin-right: 8px;
+          color: #666;
+          font-size: 20px;
+        }
+      }
+      
+      .action-buttons {
+        display: flex;
+        gap: 4px;
+        
+        button {
+          transition: transform 0.2s ease;
+          
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+    
+    tr.mat-row {
+      &:hover {
+        background-color: #f5f5f5;
+      }
+      
+      &.expandable-row {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.no-data {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+  
+  .no-data-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    color: #ccc;
+  }
+  
+  h3 {
+    margin: 0 0 8px 0;
+    font-weight: 400;
+  }
+  
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+// Department Details Section
+.department-details {
+  .department-accordion {
+    .mat-expansion-panel {
+      margin-bottom: 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      
+      .mat-expansion-panel-header {
+        .mat-panel-title {
+          display: flex;
+          align-items: center;
+          
+          .panel-icon {
+            margin-right: 8px;
+            color: #3f51b5;
+          }
+        }
+      }
+    }
+  }
+  
+  .department-employees {
+    padding: 16px 0;
+    
+    .employee-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      
+      .employee-card {
+        display: flex;
+        align-items: center;
+        padding: 16px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background: #fafafa;
+        transition: all 0.2s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .employee-avatar {
+          margin-right: 12px;
+          
+          .mat-icon {
+            font-size: 40px;
+            color: #666;
+          }
+        }
+        
+        .employee-info {
+          flex: 1;
+          
+          h4 {
+            margin: 0 0 4px 0;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+          }
+          
+          .job-title {
+            margin: 0 0 4px 0;
+            font-size: 14px;
+            color: #666;
+          }
+          
+          .salary {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2e7d32;
+          }
+        }
+      }
+    }
+  }
+  
+  .no-employees {
+    text-align: center;
+    padding: 40px 20px;
+    color: #999;
+    
+    .mat-icon {
+      font-size: 48px;
+      margin-bottom: 8px;
+    }
+    
+    p {
+      margin: 0;
+      font-style: italic;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .departments-container {
+    padding: 12px;
+  }
+  
+  .page-header {
+    .header-title {
+      font-size: 1.2rem;
+    }
+    
+    .add-button {
+      font-size: 12px;
+      
+      .mat-icon {
+        margin-right: 4px;
+      }
+    }
+  }
+  
+  .departments-table {
+    .mat-column-description {
+      display: none;
+    }
+  }
+  
+  .employee-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .departments-table {
+    .mat-column-managerName {
+      display: none;
+    }
+  }
+  
+  .form-card {
+    margin: 0 -12px 24px -12px;
+    border-radius: 0;
+  }
+}
+
+// Angular Material Customizations
+.mat-mdc-form-field {
+  &.mat-form-field-appearance-outline {
+    .mat-mdc-form-field-outline {
+      border-radius: 8px;
+    }
+  }
+}
+
+.mat-mdc-raised-button {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.mat-mdc-icon-button {
+  border-radius: 50%;
+}
+
+.mat-mdc-chip {
+  border-radius: 16px;
+}
+
+// Snackbar styling
+.success-snackbar {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.error-snackbar {
+  background-color: #f44336 !important;
+  color: white !important;
+}
