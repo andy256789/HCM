@@ -99,7 +99,20 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+// Configure HTTPS redirection
+if (app.Environment.IsDevelopment())
+{
+    // In development, make HTTPS redirection optional
+    var enableHttpsRedirection = builder.Configuration.GetValue<bool>("EnableHttpsRedirection", true);
+    if (enableHttpsRedirection)
+    {
+        app.UseHttpsRedirection();
+    }
+}
+else
+{
+    app.UseHttpsRedirection();
+}
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();

@@ -1,35 +1,91 @@
-<div class="login-container">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>HCM System Login</mat-card-title>
-      <mat-card-subtitle>Please enter your credentials</mat-card-subtitle>
-    </mat-card-header>
-    
-    <mat-card-content>
-      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" [(ngModel)]="loginData.email" name="email" required>
-        </mat-form-field>
-        
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" [(ngModel)]="loginData.password" name="password" required>
-        </mat-form-field>
-        
-        <div class="login-actions">
-          <button mat-raised-button color="primary" type="submit" [disabled]="isLoading || !loginForm.valid">
-            {{isLoading ? 'Logging in...' : 'Login'}}
-          </button>
+<div class="login-container animate-fade-in">
+  <div class="login-background">
+    <div class="login-content">
+      <!-- Logo and Title Section -->
+      <div class="login-header animate-fade-in-up">
+        <div class="logo-container">
+          <mat-icon class="logo-icon">business</mat-icon>
         </div>
-      </form>
-    </mat-card-content>
-  </mat-card>
-  
-  <div class="demo-credentials">
-    <h3>Demo Credentials</h3>
-    <p><strong>HR Admin:</strong> admin&#64;company.com / password123</p>
-    <p><strong>Manager:</strong> john.doe&#64;company.com / password123</p>
-    <p><strong>Employee:</strong> jane.smith&#64;company.com / password123</p>
+        <h1 class="app-title">HCM System</h1>
+        <p class="app-subtitle">Human Capital Management</p>
+      </div>
+
+      <!-- Login Form -->
+      <mat-card class="login-card animate-fade-in-up">
+        <mat-card-header class="card-header">
+          <mat-card-title class="card-title">Welcome Back</mat-card-title>
+          <mat-card-subtitle class="card-subtitle">Please sign in to your account</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content class="card-content">
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="login-form">
+            <mat-form-field appearance="outline" class="full-width form-field">
+              <mat-label>Email Address</mat-label>
+              <input matInput 
+                     type="email" 
+                     [(ngModel)]="loginData.email" 
+                     name="email" 
+                     required 
+                     autocomplete="email"
+                     placeholder="Enter your email">
+              <mat-icon matSuffix>email</mat-icon>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline" class="full-width form-field">
+              <mat-label>Password</mat-label>
+              <input matInput 
+                     [type]="hidePassword ? 'password' : 'text'" 
+                     [(ngModel)]="loginData.password" 
+                     name="password" 
+                     required 
+                     autocomplete="current-password"
+                     placeholder="Enter your password">
+              <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+            
+            <div class="login-actions">
+              <button mat-raised-button 
+                      color="primary" 
+                      type="submit" 
+                      class="login-button full-width"
+                      [disabled]="isLoading || !loginForm.valid">
+                <mat-icon *ngIf="isLoading" class="spinning">refresh</mat-icon>
+                <span>{{isLoading ? 'Signing In...' : 'Sign In'}}</span>
+              </button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+      
+      <!-- Demo Credentials -->
+      <mat-card class="demo-card animate-slide-in-right">
+        <mat-card-header>
+          <mat-card-title class="demo-title">
+            <mat-icon>info</mat-icon>
+            Demo Credentials
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="demo-content">
+          <div class="credential-item" (click)="fillCredentials('admin@company.com', 'password123')">
+            <div class="credential-role">HR Admin</div>
+            <div class="credential-email">admin&#64;company.com</div>
+            <div class="credential-password">password123</div>
+          </div>
+          <div class="credential-item" (click)="fillCredentials('john.doe@company.com', 'password123')">
+            <div class="credential-role">Manager</div>
+            <div class="credential-email">john.doe&#64;company.com</div>
+            <div class="credential-password">password123</div>
+          </div>
+          <div class="credential-item" (click)="fillCredentials('jane.smith@company.com', 'password123')">
+            <div class="credential-role">Employee</div>
+            <div class="credential-email">jane.smith&#64;company.com</div>
+            <div class="credential-password">password123</div>
+          </div>
+          <p class="demo-note">Click on any credential to auto-fill the form</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
   </div>
 </div>

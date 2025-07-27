@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { LoginDto } from '../../models/auth.model';
@@ -19,6 +20,7 @@ import { LoginDto } from '../../models/auth.model';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     MatSnackBarModule,
   ],
   templateUrl: './login.component.html',
@@ -31,6 +33,7 @@ export class LoginComponent {
   };
 
   isLoading = false;
+  hidePassword = true;
 
   constructor(
     private authService: AuthService,
@@ -62,5 +65,10 @@ export class LoginComponent {
         this.isLoading = false;
       },
     });
+  }
+
+  fillCredentials(email: string, password: string): void {
+    this.loginData.email = email;
+    this.loginData.password = password;
   }
 }

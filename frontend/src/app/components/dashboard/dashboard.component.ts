@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { EmployeeService } from '../../services/employee.service';
@@ -25,6 +26,7 @@ import { Department } from '../../models/department.model';
     MatTableModule,
     MatIconModule,
     MatMenuModule,
+    MatDividerModule,
     MatSnackBarModule,
   ],
   templateUrl: './dashboard.component.html',
@@ -93,6 +95,17 @@ export class DashboardComponent implements OnInit {
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
+  }
+
+  getCurrentUserName(): string {
+    if (this.currentUser?.email) {
+      // Extract name from email or return email
+      const emailName = this.currentUser.email.split('@')[0];
+      return emailName
+        .replace(/[._]/g, ' ')
+        .replace(/\b\w/g, (l) => l.toUpperCase());
+    }
+    return 'User';
   }
 
   canManageEmployees(): boolean {

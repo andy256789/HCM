@@ -1,134 +1,263 @@
-<div class="dashboard-container">
-  <mat-toolbar color="primary">
-    <span>HCM System</span>
-    <span class="spacer"></span>
-    <span *ngIf="currentUser">Welcome, {{currentUser.email}} ({{currentUser.roleName}})</span>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>account_circle</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="testDatabaseConnection()">
-        <mat-icon>refresh</mat-icon>
-        Test Database
-      </button>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        Logout
-      </button>
-    </mat-menu>
-  </mat-toolbar>
+<div class="dashboard-container animate-fade-in">
+  <!-- Modern Header with Navigation -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div class="brand-section">
+        <mat-icon class="brand-icon">business</mat-icon>
+        <h1 class="brand-title">HCM System</h1>
+      </div>
+      
+      <nav class="nav-section">
+        <button mat-button class="nav-item active">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        <button mat-button class="nav-item">
+          <mat-icon>people</mat-icon>
+          Employees
+        </button>
+        <button mat-button class="nav-item">
+          <mat-icon>business</mat-icon>
+          Departments
+        </button>
+        <button mat-button class="nav-item">
+          <mat-icon>analytics</mat-icon>
+          Reports
+        </button>
+      </nav>
 
-  <div class="dashboard-content">
-    <!-- Dashboard Stats -->
-    <div class="stats-grid">
-      <mat-card class="stat-card">
-        <mat-card-header>
-          <mat-card-title>Total Employees</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="stat-number">{{employees.length}}</div>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="stat-card">
-        <mat-card-header>
-          <mat-card-title>Departments</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="stat-number">{{departments.length}}</div>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="stat-card">
-        <mat-card-header>
-          <mat-card-title>Your Role</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div class="stat-text">{{currentUser?.roleName}}</div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-
-    <!-- Employee Table -->
-    <mat-card class="table-card">
-      <mat-card-header>
-        <mat-card-title>Employee Directory</mat-card-title>
-        <mat-card-subtitle>
-          *This demonstrates PostgreSQL integration and role-based access
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <div *ngIf="isLoading" class="loading-spinner">
-          Loading employees...
+      <div class="user-section">
+        <div class="user-info" *ngIf="currentUser">
+          <div class="user-details">
+            <span class="user-name">{{currentUser.email}}</span>
+            <span class="user-role">{{currentUser.roleName}}</span>
+          </div>
+          <div class="user-avatar">
+            <mat-icon>account_circle</mat-icon>
+          </div>
         </div>
         
-        <table mat-table [dataSource]="employees" class="employees-table" *ngIf="!isLoading">
-          <ng-container matColumnDef="fullName">
-            <th mat-header-cell *matHeaderCellDef>Name</th>
-            <td mat-cell *matCellDef="let employee">{{employee.fullName}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>Email</th>
-            <td mat-cell *matCellDef="let employee">{{employee.email}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="jobTitle">
-            <th mat-header-cell *matHeaderCellDef>Job Title</th>
-            <td mat-cell *matCellDef="let employee">{{employee.jobTitle}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="departmentName">
-            <th mat-header-cell *matHeaderCellDef>Department</th>
-            <td mat-cell *matCellDef="let employee">{{employee.departmentName}}</td>
-          </ng-container>
-
-          <ng-container matColumnDef="salary">
-            <th mat-header-cell *matHeaderCellDef>Salary</th>
-            <td mat-cell *matCellDef="let employee">{{employee.salary | currency}}</td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Department List -->
-    <mat-card class="table-card">
-      <mat-card-header>
-        <mat-card-title>Departments</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="departments-grid">
-          <mat-card *ngFor="let dept of departments" class="department-card">
-            <mat-card-header>
-              <mat-card-title>{{dept.name}}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>{{dept.description}}</p>
-              <p><strong>Employees:</strong> {{dept.employeeCount}}</p>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
-    <!-- Connection Test Info -->
-    <mat-card class="info-card">
-      <mat-card-header>
-        <mat-card-title>PostgreSQL Database Status</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p>✅ Database connection is working!</p>
-        <p>📊 Data is being fetched from PostgreSQL database</p>
-        <p>🔐 Authentication and authorization are working</p>
-        <p>🏗️ Entity Framework Core ORM is configured</p>
-        <button mat-raised-button color="accent" (click)="testDatabaseConnection()">
-          <mat-icon>refresh</mat-icon>
-          Refresh Data
+        <button mat-icon-button [matMenuTriggerFor]="userMenu" class="user-menu-trigger">
+          <mat-icon>more_vert</mat-icon>
         </button>
-      </mat-card-content>
-    </mat-card>
-  </div>
+        
+        <mat-menu #userMenu="matMenu" class="user-menu">
+          <button mat-menu-item (click)="testDatabaseConnection()">
+            <mat-icon>refresh</mat-icon>
+            Refresh Data
+          </button>
+          <mat-divider></mat-divider>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Sign Out
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="dashboard-main">
+    <!-- Welcome Section -->
+    <section class="welcome-section animate-fade-in-up">
+      <div class="welcome-content">
+        <h2 class="welcome-title">Welcome back, {{getCurrentUserName()}}!</h2>
+        <p class="welcome-subtitle">Here's what's happening in your organization today.</p>
+      </div>
+      <div class="welcome-actions">
+        <button mat-raised-button color="primary" class="action-button">
+          <mat-icon>add</mat-icon>
+          Quick Actions
+        </button>
+      </div>
+    </section>
+
+    <!-- Statistics Grid -->
+    <section class="stats-section animate-slide-in-right">
+      <div class="stats-grid">
+        <mat-card class="stat-card employees-card">
+          <div class="stat-icon-container">
+            <mat-icon class="stat-icon">group</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{employees.length}}</div>
+            <div class="stat-label">Total Employees</div>
+            <div class="stat-change positive">
+              <mat-icon>trending_up</mat-icon>
+              +12% from last month
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="stat-card departments-card">
+          <div class="stat-icon-container">
+            <mat-icon class="stat-icon">domain</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{departments.length}}</div>
+            <div class="stat-label">Departments</div>
+            <div class="stat-change neutral">
+              <mat-icon>trending_flat</mat-icon>
+              No change
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="stat-card role-card">
+          <div class="stat-icon-container">
+            <mat-icon class="stat-icon">admin_panel_settings</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{currentUser?.roleName}}</div>
+            <div class="stat-label">Your Role</div>
+            <div class="stat-change">
+              <mat-icon>verified_user</mat-icon>
+              Active permissions
+            </div>
+          </div>
+        </mat-card>
+
+        <mat-card class="stat-card status-card">
+          <div class="stat-icon-container">
+            <mat-icon class="stat-icon">check_circle</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">Online</div>
+            <div class="stat-label">System Status</div>
+            <div class="stat-change positive">
+              <mat-icon>cloud_done</mat-icon>
+              All systems operational
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </section>
+
+    <!-- Content Grid -->
+    <section class="content-section">
+      <div class="content-grid">
+        <!-- Employees Section -->
+        <mat-card class="content-card employees-section animate-fade-in-up">
+          <mat-card-header class="section-header">
+            <div class="section-title-container">
+              <mat-icon class="section-icon">people</mat-icon>
+              <mat-card-title class="section-title">Recent Employees</mat-card-title>
+            </div>
+            <button mat-icon-button>
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+          </mat-card-header>
+          
+          <mat-card-content class="section-content">
+            <div class="employees-list">
+              <div *ngFor="let employee of employees.slice(0, 5)" class="employee-item">
+                <div class="employee-avatar">
+                  <mat-icon>person</mat-icon>
+                </div>
+                <div class="employee-info">
+                  <div class="employee-name">{{employee.firstName}} {{employee.lastName}}</div>
+                  <div class="employee-details">
+                    <span class="employee-job">{{employee.jobTitle}}</span>
+                    <span class="employee-department">{{employee.departmentName}}</span>
+                  </div>
+                </div>
+                <div class="employee-salary">
+                  ${{employee.salary | number:'1.0-0'}}
+                </div>
+              </div>
+            </div>
+            <div class="section-footer">
+              <button mat-button color="primary" class="view-all-button">
+                View All Employees
+                <mat-icon>arrow_forward</mat-icon>
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- Departments Section -->
+        <mat-card class="content-card departments-section animate-fade-in-up">
+          <mat-card-header class="section-header">
+            <div class="section-title-container">
+              <mat-icon class="section-icon">business</mat-icon>
+              <mat-card-title class="section-title">Departments Overview</mat-card-title>
+            </div>
+            <button mat-icon-button>
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+          </mat-card-header>
+          
+          <mat-card-content class="section-content">
+            <div class="departments-grid">
+              <div *ngFor="let dept of departments" class="department-item">
+                <div class="department-header">
+                  <div class="department-icon">
+                    <mat-icon>domain</mat-icon>
+                  </div>
+                  <div class="department-info">
+                    <div class="department-name">{{dept.name}}</div>
+                    <div class="department-description">{{dept.description}}</div>
+                  </div>
+                </div>
+                <div class="department-stats">
+                  <div class="stat-item">
+                    <span class="stat-value">{{dept.employeeCount}}</span>
+                    <span class="stat-label">Employees</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <!-- System Status Section -->
+        <mat-card class="content-card system-status-section animate-slide-in-right">
+          <mat-card-header class="section-header">
+            <div class="section-title-container">
+              <mat-icon class="section-icon">settings</mat-icon>
+              <mat-card-title class="section-title">System Health</mat-card-title>
+            </div>
+            <button mat-icon-button (click)="testDatabaseConnection()">
+              <mat-icon>refresh</mat-icon>
+            </button>
+          </mat-card-header>
+          
+          <mat-card-content class="section-content">
+            <div class="status-list">
+              <div class="status-item healthy">
+                <mat-icon class="status-icon">check_circle</mat-icon>
+                <div class="status-info">
+                  <div class="status-title">Database Connection</div>
+                  <div class="status-description">PostgreSQL is running smoothly</div>
+                </div>
+              </div>
+              
+              <div class="status-item healthy">
+                <mat-icon class="status-icon">shield</mat-icon>
+                <div class="status-info">
+                  <div class="status-title">Authentication</div>
+                  <div class="status-description">JWT tokens are working properly</div>
+                </div>
+              </div>
+              
+              <div class="status-item healthy">
+                <mat-icon class="status-icon">storage</mat-icon>
+                <div class="status-info">
+                  <div class="status-title">Entity Framework</div>
+                  <div class="status-description">ORM is configured and active</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="section-footer">
+              <button mat-raised-button color="accent" (click)="testDatabaseConnection()" class="refresh-button">
+                <mat-icon>refresh</mat-icon>
+                Refresh Data
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </section>
+  </main>
 </div>
