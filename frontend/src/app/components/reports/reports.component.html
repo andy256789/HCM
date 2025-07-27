@@ -1,277 +1,219 @@
-<div class="reports-container">
-  <!-- Page Header -->
-  <div class="page-header">
-    <h2 class="page-title">HR Analytics & Reports</h2>
+<div class="reports">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <h1>HR Analytics & Reports</h1>
+      <p class="header-subtitle">Insights and analytics for your organization</p>
+    </div>
     <div class="header-actions">
-      <button mat-raised-button color="primary" (click)="refreshData()" class="refresh-button">
-        <mat-icon>refresh</mat-icon>
+      <button class="action-btn" (click)="refreshData()">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+        </svg>
         Refresh
       </button>
-      <button mat-stroked-button (click)="exportReport()" class="export-button">
-        <mat-icon>download</mat-icon>
+      <button class="action-btn secondary" (click)="exportReport()">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+        </svg>
         Export
       </button>
     </div>
   </div>
 
-  <!-- Loading Spinner -->
-  <div class="loading-container" *ngIf="loading">
-    <mat-progress-spinner mode="indeterminate" diameter="50"></mat-progress-spinner>
+  <!-- Loading -->
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading analytics...</p>
   </div>
 
   <div class="reports-content" *ngIf="!loading">
-    <!-- Key Metrics Overview -->
+    <!-- Key Metrics -->
     <div class="metrics-section">
-      <h2 class="section-title">
-        <mat-icon>dashboard</mat-icon>
-        Key Metrics Overview
-      </h2>
-      
+      <h2>Key Metrics Overview</h2>
       <div class="metrics-grid">
-        <mat-card class="metric-card">
-          <mat-card-content>
-            <div class="metric-header">
-              <mat-icon class="metric-icon employees">people</mat-icon>
-              <span class="metric-label">Total Employees</span>
-            </div>
+        <div class="metric-card">
+          <div class="metric-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A3 3 0 0 0 17.15 7h-2.8c-1.04 0-1.95.53-2.47 1.37L9.34 13H7.5c-.83 0-1.5.67-1.5 1.5S6.67 16 7.5 16H9l3 4 3-4h5z"/>
+            </svg>
+          </div>
+          <div class="metric-content">
             <div class="metric-value">{{ totalEmployees }}</div>
-          </mat-card-content>
-        </mat-card>
+            <div class="metric-label">Total Employees</div>
+          </div>
+        </div>
 
-        <mat-card class="metric-card">
-          <mat-card-content>
-            <div class="metric-header">
-              <mat-icon class="metric-icon departments">business</mat-icon>
-              <span class="metric-label">Departments</span>
-            </div>
+        <div class="metric-card">
+          <div class="metric-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-4h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+            </svg>
+          </div>
+          <div class="metric-content">
             <div class="metric-value">{{ totalDepartments }}</div>
-          </mat-card-content>
-        </mat-card>
+            <div class="metric-label">Departments</div>
+          </div>
+        </div>
 
-        <mat-card class="metric-card">
-          <mat-card-content>
-            <div class="metric-header">
-              <mat-icon class="metric-icon payroll">attach_money</mat-icon>
-              <span class="metric-label">Total Payroll</span>
-            </div>
+        <div class="metric-card">
+          <div class="metric-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+            </svg>
+          </div>
+          <div class="metric-content">
             <div class="metric-value">${{ totalPayroll | number:'1.0-0' }}</div>
-          </mat-card-content>
-        </mat-card>
+            <div class="metric-label">Total Payroll</div>
+          </div>
+        </div>
 
-        <mat-card class="metric-card">
-          <mat-card-content>
-            <div class="metric-header">
-              <mat-icon class="metric-icon average">trending_up</mat-icon>
-              <span class="metric-label">Average Salary</span>
-            </div>
+        <div class="metric-card">
+          <div class="metric-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+            </svg>
+          </div>
+          <div class="metric-content">
             <div class="metric-value">${{ averageSalary | number:'1.0-0' }}</div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </div>
-
-    <!-- Salary Analysis -->
-    <div class="analysis-section">
-      <h2 class="section-title">
-        <mat-icon>bar_chart</mat-icon>
-        Salary Analysis
-      </h2>
-
-      <div class="analysis-grid">
-        <!-- Salary Ranges -->
-        <mat-card class="analysis-card">
-          <mat-card-header>
-            <mat-card-title>
-              <mat-icon>pie_chart</mat-icon>
-              Salary Distribution
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="salary-ranges">
-              <div class="range-item" *ngFor="let range of salaryRanges">
-                <div class="range-info">
-                  <span class="range-label">{{ range.range }}</span>
-                  <span class="range-count">{{ range.count }} employees</span>
-                </div>
-                <div class="range-bar">
-                  <div class="range-fill" [style.width.%]="range.percentage"></div>
-                </div>
-                <span class="range-percentage">{{ range.percentage | number:'1.1-1' }}%</span>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-        <!-- Top Performers -->
-        <mat-card class="analysis-card">
-          <mat-card-header>
-            <mat-card-title>
-              <mat-icon>star</mat-icon>
-              Highest Paid Employees
-            </mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <div class="top-performers">
-              <div class="performer-item" *ngFor="let employee of getTopPerformers(); let i = index">
-                <div class="performer-rank">{{ i + 1 }}</div>
-                <div class="performer-info">
-                  <div class="performer-name">{{ employee.fullName }}</div>
-                  <div class="performer-title">{{ employee.jobTitle }}</div>
-                  <div class="performer-dept">{{ employee.departmentName }}</div>
-                </div>
-                <div class="performer-salary">${{ employee.salary | number:'1.2-2' }}</div>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-      <!-- Salary Extremes -->
-      <div class="extremes-grid">
-        <mat-card class="extreme-card highest" *ngIf="highestPaidEmployee">
-          <mat-card-content>
-            <div class="extreme-header">
-              <mat-icon>trending_up</mat-icon>
-              <span>Highest Paid Employee</span>
-            </div>
-            <div class="extreme-employee">
-              <div class="employee-name">{{ highestPaidEmployee.fullName }}</div>
-              <div class="employee-details">
-                <span class="job-title">{{ highestPaidEmployee.jobTitle }}</span>
-                <span class="department">{{ highestPaidEmployee.departmentName }}</span>
-              </div>
-              <div class="salary-amount">${{ highestPaidEmployee.salary | number:'1.2-2' }}</div>
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="extreme-card lowest" *ngIf="lowestPaidEmployee">
-          <mat-card-content>
-            <div class="extreme-header">
-              <mat-icon>trending_down</mat-icon>
-              <span>Lowest Paid Employee</span>
-            </div>
-            <div class="extreme-employee">
-              <div class="employee-name">{{ lowestPaidEmployee.fullName }}</div>
-              <div class="employee-details">
-                <span class="job-title">{{ lowestPaidEmployee.jobTitle }}</span>
-                <span class="department">{{ lowestPaidEmployee.departmentName }}</span>
-              </div>
-              <div class="salary-amount">${{ lowestPaidEmployee.salary | number:'1.2-2' }}</div>
-            </div>
-          </mat-card-content>
-        </mat-card>
+            <div class="metric-label">Average Salary</div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Department Analysis -->
-    <div class="department-section">
-      <h2 class="section-title">
-        <mat-icon>business</mat-icon>
-        Department Analysis
-      </h2>
-
-      <div class="department-grid">
-        <mat-card class="department-card" *ngFor="let summary of departmentSummaries">
-          <mat-card-header>
-            <mat-card-title>
-              <mat-icon>business_center</mat-icon>
-              {{ summary.department.name }}
-            </mat-card-title>
-            <mat-card-subtitle *ngIf="summary.department.description">
-              {{ summary.department.description }}
-            </mat-card-subtitle>
-          </mat-card-header>
+    <div class="departments-section">
+      <h2>Department Analysis</h2>
+      <div class="departments-grid" *ngIf="departmentSummaries.length > 0">
+        <div class="department-card" *ngFor="let summary of departmentSummaries">
+          <div class="card-header">
+            <div class="department-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-4h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+              </svg>
+            </div>
+          </div>
           
-          <mat-card-content>
+          <div class="department-info">
+            <h3 class="department-name">{{ summary.department.name }}</h3>
+            <p class="department-description">{{ summary.department.description || 'No description provided' }}</p>
+            
             <div class="department-metrics">
-              <div class="dept-metric">
-                <mat-icon>people</mat-icon>
-                <div class="metric-info">
-                  <span class="metric-value">{{ summary.employeeCount }}</span>
-                  <span class="metric-label">Employees</span>
-                </div>
+              <div class="metric-item">
+                <svg class="metric-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A3 3 0 0 0 17.15 7h-2.8c-1.04 0-1.95.53-2.47 1.37L9.34 13H7.5c-.83 0-1.5.67-1.5 1.5S6.67 16 7.5 16H9l3 4 3-4h5z"/>
+                </svg>
+                <span>{{ summary.employeeCount }} employees</span>
               </div>
               
-              <mat-divider></mat-divider>
-              
-              <div class="dept-metric">
-                <mat-icon>attach_money</mat-icon>
-                <div class="metric-info">
-                  <span class="metric-value">${{ summary.totalSalary | number:'1.0-0' }}</span>
-                  <span class="metric-label">Total Payroll</span>
-                </div>
+              <div class="metric-item">
+                <svg class="metric-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+                </svg>
+                <span>${{ summary.totalSalary | number:'1.0-0' }} total</span>
               </div>
               
-              <mat-divider></mat-divider>
-              
-              <div class="dept-metric">
-                <mat-icon>trending_up</mat-icon>
-                <div class="metric-info">
-                  <span class="metric-value">${{ summary.averageSalary | number:'1.0-0' }}</span>
-                  <span class="metric-label">Average Salary</span>
-                </div>
+              <div class="metric-item">
+                <svg class="metric-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+                </svg>
+                <span>${{ summary.averageSalary | number:'1.0-0' }} avg</span>
               </div>
             </div>
 
-            <div class="department-employees" *ngIf="summary.employeeCount > 0">
+            <div class="team-members" *ngIf="summary.employees.length > 0">
               <h4>Team Members</h4>
-              <mat-chip-set>
-                <mat-chip *ngFor="let employee of summary.employees">
+              <div class="employee-chips">
+                <span class="employee-chip" *ngFor="let employee of summary.employees">
                   {{ employee.fullName }}
-                </mat-chip>
-              </mat-chip-set>
+                </span>
+              </div>
             </div>
-          </mat-card-content>
-        </mat-card>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Department Insights -->
-    <div class="insights-section">
-      <h2 class="section-title">
-        <mat-icon>insights</mat-icon>
-        Department Insights
-      </h2>
-
-      <div class="insights-grid">
-        <mat-card class="insight-card" *ngIf="getDepartmentWithMostEmployees() as largestDept">
-          <mat-card-content>
-            <div class="insight-header">
-              <mat-icon class="insight-icon">group</mat-icon>
-              <span class="insight-title">Largest Department</span>
-            </div>
-            <div class="insight-content">
-              <div class="insight-value">{{ largestDept.department.name }}</div>
-              <div class="insight-description">
-                {{ largestDept.employeeCount }} employees
+    <!-- Salary Analysis -->
+    <div class="salary-section">
+      <h2>Salary Analysis</h2>
+      
+      <div class="analysis-grid">
+        <!-- Top Performers -->
+        <div class="analysis-card">
+          <h3>Highest Paid Employees</h3>
+          <div class="performers-list" *ngIf="getTopPerformers().length > 0">
+            <div class="performer-item" *ngFor="let employee of getTopPerformers(); let i = index">
+              <div class="performer-rank">{{ i + 1 }}</div>
+              <div class="performer-info">
+                <div class="performer-name">{{ employee.fullName }}</div>
+                <div class="performer-details">{{ employee.jobTitle }} • {{ employee.departmentName }}</div>
               </div>
+              <div class="performer-salary">${{ employee.salary | number:'1.0-0' }}</div>
             </div>
-          </mat-card-content>
-        </mat-card>
+          </div>
+        </div>
 
-        <mat-card class="insight-card" *ngIf="getDepartmentWithHighestPayroll() as highestPayroll">
-          <mat-card-content>
-            <div class="insight-header">
-              <mat-icon class="insight-icon">monetization_on</mat-icon>
-              <span class="insight-title">Highest Payroll</span>
-            </div>
-            <div class="insight-content">
-              <div class="insight-value">{{ highestPayroll.department.name }}</div>
-              <div class="insight-description">
-                ${{ highestPayroll.totalSalary | number:'1.0-0' }} total
+        <!-- Salary Distribution -->
+        <div class="analysis-card">
+          <h3>Salary Distribution</h3>
+          <div class="salary-ranges" *ngIf="salaryRanges.length > 0">
+            <div class="range-item" *ngFor="let range of salaryRanges">
+              <div class="range-info">
+                <span class="range-label">{{ range.range }}</span>
+                <span class="range-count">{{ range.count }} employees</span>
               </div>
+              <div class="range-bar">
+                <div class="range-fill" [style.width.%]="range.percentage"></div>
+              </div>
+              <span class="range-percentage">{{ range.percentage | number:'1.1-1' }}%</span>
             </div>
-          </mat-card-content>
-        </mat-card>
+          </div>
+        </div>
+      </div>
+
+      <!-- Salary Extremes -->
+      <div class="extremes-grid" *ngIf="highestPaidEmployee || lowestPaidEmployee">
+        <div class="extreme-card highest" *ngIf="highestPaidEmployee">
+          <div class="extreme-header">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/>
+            </svg>
+            <span>Highest Paid</span>
+          </div>
+          <div class="extreme-employee">
+            <div class="employee-name">{{ highestPaidEmployee.fullName }}</div>
+            <div class="employee-details">{{ highestPaidEmployee.jobTitle }} • {{ highestPaidEmployee.departmentName }}</div>
+            <div class="salary-amount">${{ highestPaidEmployee.salary | number:'1.0-0' }}</div>
+          </div>
+        </div>
+
+        <div class="extreme-card lowest" *ngIf="lowestPaidEmployee">
+          <div class="extreme-header">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 18l-2.29-2.29 4.88-4.88 4 4L2 7.41 3.41 6l6 6-4-4-6.3 6.29L22 12v6z"/>
+            </svg>
+            <span>Lowest Paid</span>
+          </div>
+          <div class="extreme-employee">
+            <div class="employee-name">{{ lowestPaidEmployee.fullName }}</div>
+            <div class="employee-details">{{ lowestPaidEmployee.jobTitle }} • {{ lowestPaidEmployee.departmentName }}</div>
+            <div class="salary-amount">${{ lowestPaidEmployee.salary | number:'1.0-0' }}</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Empty State -->
-    <div class="empty-state" *ngIf="totalEmployees === 0">
-      <mat-icon class="empty-icon">analytics</mat-icon>
-      <h3>No Data Available</h3>
-      <p>Add employees and departments to see analytics and reports.</p>
+    <!-- No Data -->
+    <div class="no-data" *ngIf="totalEmployees === 0">
+      <div class="no-data-illustration">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zm2.5 2.25l1.5-1.5V6.5l-1.5-1.5H4.5L3 6.5v12l1.5 1.5h15z"/>
+        </svg>
+      </div>
+      <h3>No Analytics Available</h3>
+      <p>Add employees and departments to see detailed analytics and reports for your organization.</p>
     </div>
   </div>
 </div>

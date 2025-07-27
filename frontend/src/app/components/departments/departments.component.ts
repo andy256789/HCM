@@ -40,7 +40,7 @@ export class DepartmentsComponent implements OnInit {
   constructor(
     private departmentService: DepartmentService,
     private employeeService: EmployeeService,
-    private authService: AuthService,
+    public authService: AuthService,
     private fb: FormBuilder
   ) {
     this.departmentForm = this.fb.group({
@@ -51,20 +51,34 @@ export class DepartmentsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // First try to get the current user value
-    this.currentUser = this.authService.getCurrentUserValue();
-    console.log('Initial currentUser:', this.currentUser);
-    
-    // If no user, try to subscribe to the current user observable
-    if (!this.currentUser) {
-      this.authService.currentUser$.subscribe(user => {
-        this.currentUser = user;
-        console.log('User from observable:', this.currentUser);
+    // Subscribe to current user changes - same pattern as other components
+    this.authService.currentUser$.subscribe((user) => {
+      this.currentUser = user;
+      console.log('Current user in departments component:', this.currentUser);
+      console.log('Can edit:', this.canEdit());
+      console.log('Can delete:', this.canDelete());
+
+      if (user) {
+        this.loadDepartments();
+        this.loadEmployees();
+      }
+    });
+
+    // If there's a token but no current user, try to fetch the user
+    if (
+      this.authService.getToken() &&
+      !this.authService.getCurrentUserValue()
+    ) {
+      console.log('Token exists but no user, fetching user data...');
+      this.authService.getCurrentUser().subscribe({
+        next: (user) => {
+          console.log('Successfully fetched user:', user);
+        },
+        error: (error) => {
+          console.error('Error fetching user:', error);
+        },
       });
     }
-    
-    this.loadDepartments();
-    this.loadEmployees();
   }
 
   loadDepartments(): void {
@@ -216,11 +230,11 @@ export class DepartmentsComponent implements OnInit {
   }
 
   canEdit(): boolean {
-    return this.currentUser?.roleName === 'HR Admin';
+    return this.currentUser?.roleName === 'HrAdmin';
   }
 
   canDelete(): boolean {
-    return this.currentUser?.roleName === 'HR Admin';
+    return this.currentUser?.roleName === 'HrAdmin';
   }
 
   getManagerName(managerId: number | null | undefined): string {
