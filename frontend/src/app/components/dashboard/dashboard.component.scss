@@ -1,38 +1,40 @@
-// Professional HCM Dashboard Styles
 .dashboard {
-  padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
-  background: #fafbfc;
-  min-height: calc(100vh - 4rem);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #f8fafc;
+  min-height: 100vh;
 }
 
-// Welcome Section
+/* Welcome Section */
 .welcome-section {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 2rem;
-  padding: 1.5rem 2rem;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border-radius: 16px;
+  align-items: flex-end;
+  margin-bottom: 32px;
+  padding: 32px;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border: 1px solid #475569;
   color: white;
-  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.2);
 }
 
 .welcome-content {
+  flex: 1;
+  
   .welcome-title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-    letter-spacing: -0.025em;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    margin: 0 0 4px 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
   }
   
   .welcome-subtitle {
-    font-size: 1rem;
+    font-size: 14px;
+    color: #e2e8f0;
     margin: 0;
-    opacity: 0.9;
     font-weight: 400;
   }
 }
@@ -42,76 +44,54 @@
   
   .date-label {
     display: block;
-    font-size: 0.875rem;
-    opacity: 0.8;
-    margin-bottom: 0.25rem;
+    font-size: 11px;
+    color: #cbd5e1;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
   }
   
   .date-value {
     display: block;
-    font-size: 1rem;
+    font-size: 16px;
     font-weight: 600;
+    color: #f1f5f9;
   }
 }
 
-// Analytics Section
+/* Analytics Section */
 .analytics-section {
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
 }
 
 .section-title {
-  font-size: 1.25rem;
+  font-size: 20px;
   font-weight: 600;
   color: #1e293b;
-  margin: 0 0 1.5rem 0;
-  letter-spacing: -0.025em;
+  margin: 0 0 20px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: 16px;
 }
 
 .metric-card {
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  border: 1px solid #e2e8f0;
-  transition: all 0.2s ease;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.15s ease;
   position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: #e2e8f0;
-  }
-  
-  &.employees::before {
-    background: linear-gradient(90deg, #3b82f6, #60a5fa);
-  }
-  
-  &.departments::before {
-    background: linear-gradient(90deg, #10b981, #34d399);
-  }
-  
-  &.salary::before {
-    background: linear-gradient(90deg, #f59e0b, #fbbf24);
-  }
-  
-  &.positions::before {
-    background: linear-gradient(90deg, #8b5cf6, #a78bfa);
-  }
-  
+
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-    border-color: #cbd5e1;
+    border-color: #007acc;
+    box-shadow: 0 2px 8px rgba(0, 122, 204, 0.15);
   }
 }
 
@@ -119,123 +99,106 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .metric-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  background: #333;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f1f5f9;
+  flex-shrink: 0;
   
   svg {
-    width: 24px;
-    height: 24px;
-    color: #475569;
-  }
-  
-  .employees & {
-    background: rgba(59, 130, 246, 0.1);
-    svg { color: #3b82f6; }
-  }
-  
-  .departments & {
-    background: rgba(16, 185, 129, 0.1);
-    svg { color: #10b981; }
-  }
-  
-  .salary & {
-    background: rgba(245, 158, 11, 0.1);
-    svg { color: #f59e0b; }
-  }
-  
-  .positions & {
-    background: rgba(139, 92, 246, 0.1);
-    svg { color: #8b5cf6; }
+    width: 20px;
+    height: 20px;
+    color: white;
   }
 }
 
 .metric-trend {
-  font-size: 0.875rem;
+  font-size: 11px;
   font-weight: 600;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
+  padding: 4px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   
   &.positive {
-    background: rgba(16, 185, 129, 0.1);
-    color: #059669;
+    background: #e8f5e8;
+    color: #2e7d32;
   }
   
   &.stable {
-    background: rgba(107, 114, 128, 0.1);
-    color: #6b7280;
+    background: #f0f0f0;
+    color: #666;
   }
 }
 
 .metric-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 0.25rem;
-  letter-spacing: -0.025em;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 4px 0;
+  letter-spacing: -0.5px;
 }
 
 .metric-label {
-  font-size: 0.875rem;
-  color: #64748b;
+  font-size: 12px;
+  color: #666;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-// Content Grid
+/* Content Grid */
 .content-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 2rem;
+  gap: 16px;
 }
 
-// Panel Styles
+/* Panel Styles */
 .actions-panel,
 .status-panel {
   background: white;
-  border-radius: 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #e0e0e0;
   overflow: hidden;
 }
 
 .panel-title {
-  font-size: 1.125rem;
+  font-size: 16px;
   font-weight: 600;
-  color: #1e293b;
+  color: #333;
   margin: 0;
-  padding: 1.5rem 1.5rem 0 1.5rem;
-  letter-spacing: -0.025em;
+  padding: 20px 20px 0 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-// Actions Panel
+/* Actions Panel */
 .action-list {
-  padding: 1rem 0 1.5rem 0;
+  padding: 16px 0 20px 0;
 }
 
 .action-item {
   width: 100%;
   background: none;
   border: none;
-  padding: 1rem 1.5rem;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.15s ease;
+  border-bottom: 1px solid #f0f0f0;
   
   &:hover {
     background: #f8fafc;
     
     .action-arrow svg {
-      transform: translateX(4px);
+      transform: translateX(2px);
     }
   }
   
@@ -245,19 +208,18 @@
 }
 
 .action-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  background: #f0f0f0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f1f5f9;
   flex-shrink: 0;
   
   svg {
-    width: 20px;
-    height: 20px;
-    color: #3b82f6;
+    width: 16px;
+    height: 16px;
+    color: #666;
   }
 }
 
@@ -267,39 +229,41 @@
   
   .action-title {
     display: block;
-    font-size: 0.95rem;
+    font-size: 14px;
     font-weight: 600;
-    color: #1e293b;
-    margin-bottom: 0.25rem;
+    color: #333;
+    margin-bottom: 2px;
+    letter-spacing: -0.5px;
   }
   
   .action-description {
     display: block;
-    font-size: 0.8rem;
-    color: #64748b;
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
   }
 }
 
 .action-arrow {
   svg {
-    width: 16px;
-    height: 16px;
-    color: #94a3b8;
-    transition: transform 0.2s ease;
+    width: 14px;
+    height: 14px;
+    color: #999;
+    transition: transform 0.15s ease;
   }
 }
 
-// Status Panel
+/* Status Panel */
 .status-list {
-  padding: 1rem 0 1.5rem 0;
+  padding: 16px 0 20px 0;
 }
 
 .status-item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #f1f5f9;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f0f0;
   
   &:last-child {
     border-bottom: none;
@@ -307,34 +271,33 @@
 }
 
 .status-indicator {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  background: #f0f0f0;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   
   .healthy & {
-    background: rgba(16, 185, 129, 0.1);
+    background: #e8f5e8;
   }
   
   .warning & {
-    background: rgba(245, 158, 11, 0.1);
+    background: #fff3cd;
   }
 }
 
 .status-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+  width: 6px;
+  height: 6px;
   
   .healthy & {
-    background: #10b981;
+    background: #2e7d32;
   }
   
   .warning & {
-    background: #f59e0b;
+    background: #f57c00;
   }
 }
 
@@ -343,100 +306,98 @@
   
   .status-title {
     display: block;
-    font-size: 0.875rem;
+    font-size: 14px;
     font-weight: 600;
-    color: #1e293b;
-    margin-bottom: 0.25rem;
+    color: #333;
+    margin-bottom: 2px;
+    letter-spacing: -0.5px;
   }
   
   .status-value {
     display: block;
-    font-size: 0.8rem;
-    color: #64748b;
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
   }
 }
 
-// Responsive Design
+/* Responsive Design */
 @media (max-width: 1024px) {
   .content-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 16px;
   }
   
   .welcome-section {
     flex-direction: column;
-    text-align: center;
-    gap: 1rem;
+    gap: 16px;
+    align-items: stretch;
   }
   
   .current-date {
-    text-align: center;
+    text-align: left;
   }
 }
 
 @media (max-width: 768px) {
   .dashboard {
-    padding: 1rem;
+    padding: 16px;
   }
   
   .welcome-section {
-    padding: 1rem 1.5rem;
+    padding: 20px;
   }
   
   .welcome-title {
-    font-size: 1.5rem !important;
+    font-size: 20px !important;
   }
   
   .metrics-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 16px;
   }
   
   .metric-card {
-    padding: 1rem;
+    padding: 16px;
   }
   
   .metric-value {
-    font-size: 1.5rem;
-  }
-  
-  .content-grid {
-    gap: 1rem;
+    font-size: 20px;
   }
   
   .action-item {
-    padding: 0.875rem 1rem;
+    padding: 12px 16px;
   }
   
   .action-content {
     .action-title {
-      font-size: 0.875rem;
+      font-size: 13px;
     }
     
     .action-description {
-      font-size: 0.75rem;
+      font-size: 11px;
     }
+  }
+  
+  .panel-title {
+    padding: 16px 16px 0 16px;
+    font-size: 14px;
   }
 }
 
 @media (max-width: 480px) {
   .welcome-section {
-    padding: 1rem;
+    padding: 16px;
   }
   
   .metric-card {
-    padding: 1rem;
-  }
-  
-  .panel-title {
-    padding: 1rem 1rem 0 1rem;
-    font-size: 1rem;
+    padding: 16px;
   }
   
   .action-item {
     flex-direction: column;
     text-align: center;
-    gap: 0.75rem;
+    gap: 8px;
     
     .action-content {
       text-align: center;
@@ -445,5 +406,9 @@
     .action-arrow {
       display: none;
     }
+  }
+  
+  .status-item {
+    padding: 10px 16px;
   }
 }

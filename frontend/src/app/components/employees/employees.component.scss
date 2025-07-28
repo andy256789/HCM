@@ -1,5 +1,4 @@
 .employees {
-  padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
@@ -385,7 +384,7 @@
 
   .search-container {
     flex: 1;
-    max-width: 350px;
+    max-width: 75%;
 
     .search-input-wrapper {
       position: relative;

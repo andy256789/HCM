@@ -1,147 +1,184 @@
 <div class="departments">
-  <!-- Header -->
-  <div class="header">
+  <!-- Page Header -->
+  <div class="page-header">
     <div class="header-content">
-      <h1>Department Management</h1>
-      <p class="header-subtitle">Organize your company structure</p>
+      <div class="header-info">
+        <h1 class="page-title">Department Management</h1>
+        <p class="page-description">Organize your company structure</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-item">
+          <span class="stat-value">{{dataSource.data.length}}</span>
+          <span class="stat-label">Departments</span>
+        </div>
+      </div>
     </div>
-    <button class="add-btn" *ngIf="canEdit()" (click)="showAddForm()">
+    <button class="primary-btn" *ngIf="canEdit()" (click)="showAddForm()">
       <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
         <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
       </svg>
-      Add Department
+      <span>Add Department</span>
     </button>
   </div>
 
-  <!-- Loading -->
-  <div class="loading" *ngIf="loading">
-    <div class="spinner"></div>
-    <p>Loading departments...</p>
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="loading">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading departments...</p>
+    </div>
   </div>
 
-  <!-- Department Form -->
-  <div class="form-section" *ngIf="showForm">
-    <div class="form-card">
-      <div class="form-header">
-        <h2>{{ editingDepartment ? 'Edit Department' : 'Add New Department' }}</h2>
-        <button class="close-btn" (click)="cancelForm()" type="button">
+  <!-- Department Form Modal -->
+  <div class="modal-overlay" *ngIf="showForm" (click)="cancelForm()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2 class="modal-title">{{ editingDepartment ? 'Edit Department' : 'Add New Department' }}</h2>
+        <button class="modal-close" (click)="cancelForm()" type="button">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
           </svg>
         </button>
       </div>
-      
-      <form [formGroup]="departmentForm" (ngSubmit)="saveDepartment()" class="form">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Department Name</label>
-            <input type="text" formControlName="name" placeholder="Enter department name">
-            <div class="error" *ngIf="departmentForm.get('name')?.hasError('required') && departmentForm.get('name')?.touched">
-              Department name is required
+
+      <div class="modal-body">
+        <form [formGroup]="departmentForm" (ngSubmit)="saveDepartment()" class="employee-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Department Name</label>
+              <input type="text" formControlName="name" class="form-input" placeholder="Enter department name">
+              <div class="form-error" *ngIf="departmentForm.get('name')?.hasError('required') && departmentForm.get('name')?.touched">
+                Department name is required
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Manager</label>
+              <select formControlName="managerId" class="form-select">
+                <option [value]="null">No Manager</option>
+                <option *ngFor="let manager of getAvailableManagers()" [value]="manager.id">
+                  {{ manager.fullName }}
+                </option>
+              </select>
             </div>
           </div>
-          
-          <div class="form-group">
-            <label>Manager</label>
-            <select formControlName="managerId">
-              <option [value]="null">No Manager</option>
-              <option *ngFor="let manager of getAvailableManagers()" [value]="manager.id">
-                {{ manager.fullName }}
-              </option>
-            </select>
-          </div>
-        </div>
 
-        <div class="form-row">
-          <div class="form-group full-width">
-            <label>Description</label>
-            <textarea formControlName="description" placeholder="Enter department description" rows="4"></textarea>
+          <div class="form-grid">
+            <div class="form-group form-group-full">
+              <label class="form-label">Description</label>
+              <textarea formControlName="description" class="form-input" placeholder="Enter department description" rows="4"></textarea>
+            </div>
           </div>
-        </div>
 
-        <div class="form-actions">
-          <button type="button" class="cancel-btn" (click)="cancelForm()">Cancel</button>
-          <button type="submit" class="save-btn" [disabled]="!departmentForm.valid || loading">
-            {{ editingDepartment ? 'Update' : 'Save' }}
-          </button>
-        </div>
-      </form>
+          <div class="form-actions">
+            <button type="button" class="secondary-btn" (click)="cancelForm()">Cancel</button>
+            <button type="submit" class="primary-btn" [disabled]="!departmentForm.valid || loading">
+              {{ editingDepartment ? 'Update' : 'Save' }}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
-  <!-- Department List -->
-  <div class="list-section" *ngIf="!showForm">
-    <!-- Search -->
-    <div class="search-section">
-      <div class="search-box">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-        </svg>
-        <input type="text" (keyup)="applyFilter($event)" placeholder="Search departments by name or description...">
+  <!-- Main Content -->
+  <div class="main-content" *ngIf="!showForm">
+    <!-- Search and Filters -->
+    <div class="content-header">
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+          </svg>
+          <input type="text" (keyup)="applyFilter($event)" class="search-input" placeholder="Search departments by name or description...">
+        </div>
+      </div>
+
+      <div class="view-options">
+        <span class="results-count">{{ dataSource.filteredData.length }} of {{ dataSource.data.length }} departments</span>
       </div>
     </div>
 
-    <!-- Department Cards -->
-    <div class="departments-grid" *ngIf="dataSource.data.length > 0">
-      <div class="department-card" *ngFor="let department of dataSource.filteredData">
-        <div class="card-header">
-          <div class="department-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-4h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
-            </svg>
-          </div>
-          <div class="department-actions" *ngIf="canEdit() || canDelete()">
-            <button class="action-btn edit-btn" *ngIf="canEdit()" (click)="editDepartment(department)" title="Edit Department">
+    <!-- Department Grid -->
+    <div class="employees-container" *ngIf="dataSource.data.length > 0">
+      <div class="employees-grid">
+        <div class="employee-card" *ngFor="let department of dataSource.filteredData">
+          <div class="card-header">
+            <div class="employee-avatar">
               <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-4h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
               </svg>
-            </button>
-            <button class="action-btn delete-btn" *ngIf="canDelete()" (click)="deleteDepartment(department)" title="Delete Department">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-        
-        <div class="department-info">
-          <h3 class="department-name">{{ department.name }}</h3>
-          <p class="department-description">{{ department.description || 'No description provided' }}</p>
-          
-          <div class="department-details">
-            <div class="detail-item" *ngIf="getManagerName(department.managerId) !== 'No Manager'">
-              <svg class="detail-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-              </svg>
-              <span>{{ getManagerName(department.managerId) }}</span>
             </div>
-            
-            <div class="detail-item">
-              <svg class="detail-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A3 3 0 0 0 17.15 7h-2.8c-1.04 0-1.95.53-2.47 1.37L9.34 13H7.5c-.83 0-1.5.67-1.5 1.5S6.67 16 7.5 16H9l3 4 3-4h5z"/>
-              </svg>
-              <span class="employee-count">{{ getDepartmentEmployeeCount(department.id) }} employees</span>
+            <div class="card-actions" *ngIf="canEdit() || canDelete()">
+              <button class="action-btn edit" *ngIf="canEdit()" (click)="editDepartment(department)" title="Edit Department">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                </svg>
+              </button>
+              <button class="action-btn delete" *ngIf="canDelete()" (click)="deleteDepartment(department)" title="Delete Department">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="card-content">
+            <h3 class="employee-name">{{ department.name }}</h3>
+            <p class="employee-title">{{ department.description || 'No description provided' }}</p>
+
+            <div class="employee-details">
+              <div class="detail-row" *ngIf="getManagerName(department.managerId) !== 'No Manager'">
+                <svg class="detail-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+                <span class="detail-text">{{ getManagerName(department.managerId) }}</span>
+              </div>
+              
+              <div class="detail-row">
+                <svg class="detail-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A3 3 0 0 0 17.15 7h-2.8c-1.04 0-1.95.53-2.47 1.37L9.34 13H7.5c-.83 0-1.5.67-1.5 1.5S6.67 16 7.5 16H9l3 4 3-4h5z"/>
+                </svg>
+                <span class="detail-text">{{ getDepartmentEmployeeCount(department.id) }} employees</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- No Data -->
-    <div class="no-data" *ngIf="dataSource.data.length === 0 && !loading">
-      <div class="no-data-illustration">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-4h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/>
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="dataSource.data.length === 0 && !loading">
+      <div class="empty-illustration">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="60" fill="#f8fafc"/>
+          <rect x="40" y="45" width="40" height="30" fill="#e2e8f0" rx="4"/>
+          <rect x="44" y="49" width="8" height="6" fill="#cbd5e1"/>
+          <rect x="44" y="57" width="12" height="4" fill="#cbd5e1"/>
+          <rect x="44" y="63" width="16" height="4" fill="#cbd5e1"/>
         </svg>
       </div>
-      <h3>No Departments Found</h3>
-      <p>Your organization doesn't have any departments yet. Start by creating your first department to organize your workforce.</p>
+      <h3 class="empty-title">No Departments Found</h3>
+      <p class="empty-description">Your organization doesn't have any departments yet. Start by creating your first department to organize your workforce.</p>
       <button class="add-first-btn" *ngIf="canEdit()" (click)="showAddForm()">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
         </svg>
         Add First Department
       </button>
+    </div>
+
+    <!-- No Search Results -->
+    <div class="empty-state" *ngIf="dataSource.data.length > 0 && dataSource.filteredData.length === 0">
+      <div class="empty-illustration">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="60" fill="#f8fafc"/>
+          <circle cx="55" cy="55" r="20" stroke="#e2e8f0" stroke-width="2"/>
+          <path d="71 71l15 15" stroke="#e2e8f0" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3 class="empty-title">No Results Found</h3>
+      <p class="empty-description">Try adjusting your search criteria to find the departments you're looking for.</p>
     </div>
   </div>
 </div>

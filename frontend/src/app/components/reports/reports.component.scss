@@ -1,8 +1,7 @@
 .reports {
-  padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   background: #f8fafc;
   min-height: 100vh;
 }
@@ -14,26 +13,27 @@
   align-items: flex-end;
   margin-bottom: 32px;
   padding: 32px;
-  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  border-radius: 16px;
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border: 1px solid #475569;
   color: white;
-  box-shadow: 0 8px 32px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 4px 16px rgba(30, 41, 59, 0.2);
 }
 
 .header-content {
   flex: 1;
   
   h1 {
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 24px;
+    font-weight: 600;
     color: white;
     margin: 0 0 4px 0;
-    letter-spacing: -0.025em;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
   }
   
   .header-subtitle {
-    font-size: 16px;
-    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    color: #e2e8f0;
     margin: 0;
     font-weight: 400;
   }
@@ -45,34 +45,41 @@
 }
 
 .action-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
-  padding: 14px 24px;
+  border: 1px solid #2563eb;
+  padding: 12px 20px;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  backdrop-filter: blur(10px);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border-color: #1d4ed8;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     transform: translateY(-1px);
   }
 
   &.secondary {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+    border-color: #475569;
+    
+    &:hover {
+      background: linear-gradient(135deg, #475569 0%, #334155 100%);
+      border-color: #334155;
+    }
   }
 
   .btn-icon {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -82,24 +89,26 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px 32px;
-  text-align: center;
+  padding: 80px 20px;
   color: #64748b;
+  background: white;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
   .spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid #e2e8f0;
-    border-top: 3px solid #3b82f6;
-    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    border: 2px solid #e2e8f0;
+    border-top: 2px solid #3b82f6;
     animation: spin 1s linear infinite;
     margin-bottom: 16px;
   }
 
   p {
-    font-size: 16px;
-    font-weight: 500;
+    color: #64748b;
+    font-size: 14px;
     margin: 0;
+    font-weight: 500;
   }
 }
 
@@ -113,48 +122,47 @@
   margin-bottom: 32px;
 
   h2 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     color: #1e293b;
-    margin: 0 0 24px 0;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 }
 
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  gap: 16px;
 }
 
 .metric-card {
   background: white;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
   display: flex;
   align-items: center;
   gap: 16px;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px -3px rgba(0, 0, 0, 0.1);
+    border-color: #007acc;
+    box-shadow: 0 2px 8px rgba(0, 122, 204, 0.15);
   }
 
   .metric-icon {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    background: #333;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 
     svg {
-      width: 24px;
-      height: 24px;
+      width: 20px;
+      height: 20px;
       color: white;
     }
   }
@@ -163,16 +171,19 @@
     flex: 1;
 
     .metric-value {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1e293b;
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
       margin: 0 0 4px 0;
+      letter-spacing: -0.5px;
     }
 
     .metric-label {
-      font-size: 14px;
-      color: #64748b;
+      font-size: 12px;
+      color: #666;
       font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
   }
 }
@@ -182,30 +193,30 @@
   margin-bottom: 32px;
 
   h2 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     color: #1e293b;
-    margin: 0 0 24px 0;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 }
 
 .departments-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
 }
 
 .department-card {
   background: white;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-  transition: all 0.2s ease;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.15s ease;
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px -3px rgba(0, 0, 0, 0.1);
+    border-color: #007acc;
+    box-shadow: 0 2px 8px rgba(0, 122, 204, 0.15);
   }
 
   .card-header {
@@ -215,17 +226,16 @@
     margin-bottom: 16px;
 
     .department-icon {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, #10b981, #059669);
-      border-radius: 12px;
+      width: 40px;
+      height: 40px;
+      background: #333;
       display: flex;
       align-items: center;
       justify-content: center;
 
       svg {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         color: white;
       }
     }
@@ -233,59 +243,68 @@
 
   .department-info {
     .department-name {
-      font-size: 20px;
+      font-size: 16px;
       font-weight: 600;
-      color: #1e293b;
-      margin: 0 0 8px 0;
+      color: #333;
+      margin: 0 0 4px 0;
+      letter-spacing: -0.5px;
     }
 
     .department-description {
-      font-size: 14px;
-      color: #64748b;
+      color: #666;
+      font-size: 12px;
       margin: 0 0 16px 0;
-      line-height: 1.5;
+      font-weight: 500;
+      line-height: 1.4;
     }
 
     .department-metrics {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
       margin-bottom: 20px;
 
       .metric-item {
         display: flex;
         align-items: center;
         gap: 8px;
-        font-size: 14px;
-        color: #64748b;
+        font-size: 12px;
+        color: #666;
 
         .metric-icon {
-          width: 16px;
-          height: 16px;
-          color: #3b82f6;
+          width: 14px;
+          height: 14px;
+          color: #999;
+          flex-shrink: 0;
+        }
+
+        span {
+          color: #666;
+          font-weight: 500;
         }
       }
     }
 
     .team-members {
       h4 {
-        font-size: 14px;
+        font-size: 12px;
         font-weight: 600;
-        color: #1e293b;
-        margin: 0 0 12px 0;
+        color: #333;
+        margin: 0 0 8px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
       }
 
       .employee-chips {
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 4px;
 
         .employee-chip {
           background: #f1f5f9;
           color: #475569;
-          padding: 6px 12px;
-          border-radius: 20px;
-          font-size: 12px;
+          padding: 4px 8px;
+          font-size: 11px;
           font-weight: 500;
         }
       }
@@ -298,57 +317,58 @@
   margin-bottom: 32px;
 
   h2 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
     color: #1e293b;
-    margin: 0 0 24px 0;
+    margin: 0 0 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 }
 
 .analysis-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 24px;
-  margin-bottom: 24px;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .analysis-card {
   background: white;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
 
   h3 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    color: #1e293b;
-    margin: 0 0 20px 0;
+    color: #333;
+    margin: 0 0 16px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .performers-list {
     .performer-item {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 12px 0;
-      border-bottom: 1px solid #f1f5f9;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
 
       &:last-child {
         border-bottom: none;
       }
 
       .performer-rank {
-        width: 32px;
-        height: 32px;
-        background: #3b82f6;
+        width: 24px;
+        height: 24px;
+        background: #333;
         color: white;
-        border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 600;
-        font-size: 14px;
+        font-size: 12px;
         flex-shrink: 0;
       }
 
@@ -357,20 +377,23 @@
 
         .performer-name {
           font-weight: 600;
-          color: #1e293b;
-          margin-bottom: 4px;
+          color: #333;
+          margin-bottom: 2px;
+          font-size: 14px;
+          letter-spacing: -0.5px;
         }
 
         .performer-details {
-          font-size: 14px;
-          color: #64748b;
+          font-size: 12px;
+          color: #666;
+          font-weight: 500;
         }
       }
 
       .performer-salary {
         font-weight: 600;
-        color: #059669;
-        font-size: 16px;
+        color: #007acc;
+        font-size: 14px;
       }
     }
   }
@@ -379,47 +402,48 @@
     .range-item {
       display: flex;
       align-items: center;
-      gap: 16px;
-      padding: 12px 0;
+      gap: 12px;
+      margin-bottom: 12px;
 
       .range-info {
-        flex: 1;
+        flex: 0 0 120px;
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 2px;
 
         .range-label {
           font-weight: 600;
-          color: #1e293b;
-          font-size: 14px;
+          color: #333;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .range-count {
-          font-size: 12px;
-          color: #64748b;
+          font-size: 11px;
+          color: #666;
+          font-weight: 500;
         }
       }
 
       .range-bar {
-        flex: 2;
-        height: 8px;
-        background: #f1f5f9;
-        border-radius: 4px;
+        flex: 1;
+        height: 6px;
+        background: #f0f0f0;
         overflow: hidden;
 
         .range-fill {
           height: 100%;
-          background: linear-gradient(90deg, #3b82f6, #2563eb);
-          border-radius: 4px;
+          background: #007acc;
           transition: width 0.3s ease;
         }
       }
 
       .range-percentage {
         font-weight: 600;
-        color: #3b82f6;
-        font-size: 14px;
-        min-width: 50px;
+        color: #007acc;
+        font-size: 12px;
+        min-width: 40px;
         text-align: right;
       }
     }
@@ -429,62 +453,64 @@
 .extremes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
+  gap: 16px;
 }
 
 .extreme-card {
   background: white;
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
 
   &.highest {
-    border-left: 4px solid #059669;
+    border-left: 4px solid #007acc;
   }
 
   &.lowest {
-    border-left: 4px solid #dc2626;
+    border-left: 4px solid #d32f2f;
   }
 
   .extreme-header {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 16px;
-    color: #64748b;
-    font-size: 14px;
+    margin-bottom: 12px;
+    color: #666;
+    font-size: 12px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 
     svg {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
     }
   }
 
   .extreme-employee {
     .employee-name {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: 600;
-      color: #1e293b;
-      margin-bottom: 8px;
+      color: #333;
+      margin-bottom: 4px;
+      letter-spacing: -0.5px;
     }
 
     .employee-details {
-      font-size: 14px;
-      color: #64748b;
-      margin-bottom: 12px;
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 8px;
+      font-weight: 500;
     }
 
     .salary-amount {
-      font-size: 24px;
-      font-weight: 700;
-      color: #059669;
+      font-size: 20px;
+      font-weight: 600;
+      color: #007acc;
     }
   }
 
   &.lowest .salary-amount {
-    color: #dc2626;
+    color: #d32f2f;
   }
 }
 
@@ -494,42 +520,42 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px 32px;
+  padding: 60px 24px;
   text-align: center;
   background: white;
-  border-radius: 16px;
-  border: 2px dashed #e2e8f0;
+  border: 1px solid #e0e0e0;
 
   .no-data-illustration {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    background: #f0f0f0;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 24px;
 
     svg {
-      width: 40px;
-      height: 40px;
-      color: #94a3b8;
+      width: 32px;
+      height: 32px;
+      color: #999;
     }
   }
 
   h3 {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 600;
-    color: #1e293b;
+    color: #333;
     margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   p {
-    font-size: 16px;
-    color: #64748b;
+    color: #666;
+    font-size: 14px;
     margin: 0;
+    line-height: 1.4;
     max-width: 400px;
-    line-height: 1.5;
   }
 }
 
@@ -542,12 +568,18 @@
   .header {
     flex-direction: column;
     gap: 16px;
-    text-align: center;
-    align-items: center;
-  }
+    align-items: stretch;
+    padding: 20px;
 
-  .header-actions {
-    justify-content: center;
+    .header-content {
+      h1 {
+        font-size: 20px;
+      }
+    }
+
+    .header-actions {
+      justify-content: center;
+    }
   }
 
   .metrics-grid,
@@ -578,460 +610,14 @@
   }
 }
 
-// Key Metrics Section
-.metrics-section {
-  margin-bottom: 40px;
-  
-  .metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    
-    .metric-card {
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      
-      &:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-      }
-      
-      .metric-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 12px;
-        
-        .metric-icon {
-          margin-right: 12px;
-          font-size: 24px;
-          
-          &.employees { color: #4caf50; }
-          &.departments { color: #2196f3; }
-          &.payroll { color: #ff9800; }
-          &.average { color: #9c27b0; }
-        }
-        
-        .metric-label {
-          font-size: 14px;
-          color: #666;
-          font-weight: 500;
-        }
-      }
-      
-      .metric-value {
-        font-size: 2.2rem;
-        font-weight: 600;
-        color: #333;
-        line-height: 1;
-      }
-    }
-  }
-}
-
-// Analysis Section
-.analysis-section {
-  margin-bottom: 40px;
-  
-  .analysis-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 24px;
-    margin-bottom: 24px;
-    
-    .analysis-card {
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      
-      mat-card-header {
-        mat-card-title {
-          display: flex;
-          align-items: center;
-          color: #333;
-          
-          .mat-icon {
-            margin-right: 8px;
-            color: #3f51b5;
-          }
-        }
-      }
-    }
-  }
-  
-  .salary-ranges {
-    .range-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-      
-      .range-info {
-        flex: 0 0 120px;
-        
-        .range-label {
-          display: block;
-          font-weight: 500;
-          color: #333;
-        }
-        
-        .range-count {
-          display: block;
-          font-size: 12px;
-          color: #666;
-        }
-      }
-      
-      .range-bar {
-        flex: 1;
-        height: 8px;
-        background-color: #e0e0e0;
-        border-radius: 4px;
-        overflow: hidden;
-        
-        .range-fill {
-          height: 100%;
-          background: linear-gradient(45deg, #3f51b5, #2196f3);
-          transition: width 0.3s ease;
-        }
-      }
-      
-      .range-percentage {
-        flex: 0 0 50px;
-        text-align: right;
-        font-weight: 500;
-        color: #333;
-      }
-    }
-  }
-  
-  .top-performers {
-    .performer-item {
-      display: flex;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px solid #f0f0f0;
-      
-      &:last-child {
-        border-bottom: none;
-      }
-      
-      .performer-rank {
-        flex: 0 0 30px;
-        width: 24px;
-        height: 24px;
-        background: linear-gradient(45deg, #3f51b5, #2196f3);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 12px;
-        font-weight: 600;
-        margin-right: 12px;
-      }
-      
-      .performer-info {
-        flex: 1;
-        
-        .performer-name {
-          font-weight: 500;
-          color: #333;
-          margin-bottom: 2px;
-        }
-        
-        .performer-title {
-          font-size: 12px;
-          color: #666;
-          margin-bottom: 2px;
-        }
-        
-        .performer-dept {
-          font-size: 11px;
-          color: #999;
-        }
-      }
-      
-      .performer-salary {
-        font-weight: 600;
-        color: #2e7d32;
-      }
-    }
-  }
-  
-  .extremes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    
-    .extreme-card {
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      
-      &.highest {
-        border-left: 4px solid #4caf50;
-      }
-      
-      &.lowest {
-        border-left: 4px solid #f44336;
-      }
-      
-      .extreme-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
-        
-        .mat-icon {
-          margin-right: 8px;
-          color: #3f51b5;
-        }
-        
-        span {
-          font-weight: 500;
-          color: #333;
-        }
-      }
-      
-      .extreme-employee {
-        .employee-name {
-          font-size: 1.1rem;
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 8px;
-        }
-        
-        .employee-details {
-          display: flex;
-          flex-direction: column;
-          margin-bottom: 12px;
-          
-          .job-title {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 2px;
-          }
-          
-          .department {
-            font-size: 12px;
-            color: #999;
-          }
-        }
-        
-        .salary-amount {
-          font-size: 1.3rem;
-          font-weight: 600;
-          color: #2e7d32;
-        }
-      }
-    }
-  }
-}
-
-// Department Section
-.department-section {
-  margin-bottom: 40px;
-  
-  .department-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 24px;
-    
-    .department-card {
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease;
-      
-      &:hover {
-        transform: translateY(-2px);
-      }
-      
-      mat-card-header {
-        mat-card-title {
-          display: flex;
-          align-items: center;
-          color: #333;
-          
-          .mat-icon {
-            margin-right: 8px;
-            color: #3f51b5;
-          }
-        }
-        
-        mat-card-subtitle {
-          color: #666;
-          margin-top: 4px;
-        }
-      }
-      
-      .department-metrics {
-        margin-bottom: 20px;
-        
-        .dept-metric {
-          display: flex;
-          align-items: center;
-          padding: 12px 0;
-          
-          .mat-icon {
-            margin-right: 12px;
-            color: #3f51b5;
-          }
-          
-          .metric-info {
-            display: flex;
-            flex-direction: column;
-            
-            .metric-value {
-              font-size: 1.2rem;
-              font-weight: 600;
-              color: #333;
-            }
-            
-            .metric-label {
-              font-size: 12px;
-              color: #666;
-            }
-          }
-        }
-      }
-      
-      .department-employees {
-        h4 {
-          font-size: 14px;
-          font-weight: 500;
-          color: #333;
-          margin: 0 0 12px 0;
-        }
-        
-        mat-chip-set {
-          .mat-mdc-chip {
-            margin: 2px;
-            font-size: 11px;
-          }
-        }
-      }
-    }
-  }
-}
-
-// Insights Section
-.insights-section {
-  margin-bottom: 40px;
-  
-  .insights-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    
-    .insight-card {
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
-      
-      .insight-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 16px;
-        
-        .insight-icon {
-          margin-right: 12px;
-          color: #3f51b5;
-          font-size: 24px;
-        }
-        
-        .insight-title {
-          font-weight: 500;
-          color: #333;
-        }
-      }
-      
-      .insight-content {
-        .insight-value {
-          font-size: 1.3rem;
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 4px;
-        }
-        
-        .insight-description {
-          font-size: 14px;
-          color: #666;
-        }
-      }
-    }
-  }
-}
-
-// Empty State
-.empty-state {
-  text-align: center;
-  padding: 80px 20px;
-  color: #666;
-  
-  .empty-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
-    color: #ccc;
-  }
-  
-  h3 {
-    margin: 0 0 12px 0;
-    font-weight: 400;
-    color: #333;
-  }
-  
-  p {
-    margin: 0;
-    font-size: 16px;
-  }
-}
-
-// Responsive Design
-@media (max-width: 768px) {
-  .reports-container {
-    padding: 12px;
-  }
-  
-  .page-header {
-    .header-title {
-      font-size: 1.2rem;
-    }
-  }
-  
-  .metrics-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
-  }
-  
-  .analysis-grid {
-    grid-template-columns: 1fr !important;
-  }
-  
-  .department-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-
 @media (max-width: 480px) {
-  .section-title {
-    font-size: 1.3rem !important;
-  }
-  
   .metrics-grid {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: 1fr;
   }
-  
-  .extremes-grid {
-    grid-template-columns: 1fr !important;
-  }
-  
-  .insights-grid {
-    grid-template-columns: 1fr !important;
+
+  .action-btn {
+    padding: 10px 16px;
+    font-size: 12px;
   }
 }
 
-// Angular Material Customizations
-.mat-mdc-card {
-  border-radius: 12px;
-}
-
-.mat-mdc-chip {
-  border-radius: 16px;
-}
