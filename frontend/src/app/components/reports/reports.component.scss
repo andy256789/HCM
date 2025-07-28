@@ -2,8 +2,8 @@
   max-width: 1400px;
   margin: 0 auto;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  background: #f8fafc;
-  min-height: 100vh;
+  background: transparent;
+  min-height: calc(100vh - 48px);
 }
 
 /* Header */

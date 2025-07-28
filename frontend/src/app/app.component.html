@@ -4,8 +4,13 @@
   <nav class="app-sidebar" *ngIf="isLoggedIn" [class.sidebar-collapsed]="sidebarCollapsed">
     <!-- Brand Section -->
     <div class="sidebar-brand">
-      <mat-icon class="brand-icon">business</mat-icon>
-      <span class="brand-text" *ngIf="!sidebarCollapsed">HCM System</span>
+      <div class="brand-content">
+        <mat-icon class="brand-icon">business</mat-icon>
+        <span class="brand-text" *ngIf="!sidebarCollapsed">HCM System</span>
+      </div>
+      <button mat-icon-button (click)="toggleSidebar()" class="sidebar-toggle">
+        <mat-icon>menu</mat-icon>
+      </button>
     </div>
 
     <!-- Navigation Menu -->
@@ -53,18 +58,8 @@
 
   <!-- Main Content Area -->
   <div class="app-main" [class.with-sidebar]="isLoggedIn">
-    <!-- Top Header (only shown when logged in) -->
-    <header class="app-header" *ngIf="isLoggedIn">
-      <button mat-icon-button (click)="toggleSidebar()" class="sidebar-toggle">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <div class="header-actions">
-        <!-- Add any header actions here -->
-      </div>
-    </header>
-
     <!-- Page Content -->
-    <main class="app-content" [class.with-header]="isLoggedIn">
+    <main class="app-content">
       <router-outlet></router-outlet>
     </main>
   </div>
