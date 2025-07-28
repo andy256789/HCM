@@ -114,6 +114,15 @@ export class DashboardComponent implements OnInit {
     return 'User';
   }
 
+  getCurrentDate(): string {
+    return new Date().toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
+
   canManageEmployees(): boolean {
     return (
       this.currentUser?.roleName === 'HrAdmin' ||
